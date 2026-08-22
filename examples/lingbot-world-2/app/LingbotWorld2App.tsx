@@ -163,28 +163,96 @@ export function LingbotWorld2App() {
           </div>
         </section>
 
-        {/* 3. "THE PROBLEM" EDITORIAL SECTION */}
+        {/* 2. "THE PROBLEM" EDITORIAL SECTION */}
         <section id="problem" className="grid grid-cols-1 md:grid-cols-[160px_1fr] border-b border-[#111111]">
           {/* Left Column: Vertical Label */}
           <div className="border-b md:border-b-0 md:border-r border-[#111111] p-6 font-mono text-xs text-[#666666] uppercase tracking-wider">
-            the<br />problem
+            02 / the<br />problem
           </div>
 
-          {/* Right Column: Editorial Headline & Copy */}
-          <div className="p-8 lg:p-14 space-y-4 bg-[#F2F1ED]">
-            <h2
-              className="text-3xl sm:text-4xl lg:text-5xl text-[#111111] font-normal tracking-tight"
-              style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
-            >
-              Why physical AI models fail in the real world
-            </h2>
+          {/* Right Column: Editorial Headline & Structured Problem Breakdown */}
+          <div className="p-8 lg:p-14 space-y-8 bg-[#F2F1ED]">
+            <div className="space-y-3">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#666666] font-bold">
+                [ Fundamental Industry Problem ]
+              </span>
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl text-[#111111] font-normal tracking-tight"
+                style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+              >
+                Robotics companies have a fundamental problem:
+              </h2>
+              <p className="text-lg sm:text-xl text-[#111111] font-semibold font-sans">
+                Real-world testing is expensive, slow, and dangerous.
+              </p>
+            </div>
 
-            <p className="text-sm sm:text-base text-[#444444] leading-relaxed max-w-3xl font-sans">
-              Robotics foundation models learn nominal trajectories quickly. But they fail catastrophically on the long tail of physical reality—unexpected specular glare, occluded pedestrians emerging from blind corners, sensor dropouts, and multi-robot right-of-way contention.
-            </p>
-            <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-3xl font-sans">
-              Hardware test fleets are expensive and dangerous to crash; static synthetic simulators are too clean and lack physical world fidelity. LOOP bridges the gap with continuous generative perturbation testing.
-            </p>
+            {/* Contrast Card: Nominal vs Long-tail failures */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              {/* Left: What works */}
+              <div className="p-6 bg-white border border-[#111111] shadow-[2px_2px_0px_#111111] space-y-3">
+                <span className="font-mono text-[11px] uppercase tracking-wider font-extrabold text-[#00A86B] flex items-center gap-1.5">
+                  <span>✓</span> NOMINAL BASELINE
+                </span>
+                <p className="text-sm font-bold text-[#111111]">
+                  A robot policy might work perfectly in:
+                </p>
+                <div className="bg-[#F2F1ED] p-3 border border-[#111111] font-mono text-xs text-[#111111] font-medium">
+                  Warehouse A · Daytime · Empty aisle
+                </div>
+              </div>
+
+              {/* Right: Where it breaks */}
+              <div className="p-6 bg-white border border-[#111111] shadow-[2px_2px_0px_#111111] space-y-3">
+                <span className="font-mono text-[11px] uppercase tracking-wider font-extrabold text-[#DC2626] flex items-center gap-1.5">
+                  <span>✕</span> PHYSICAL REALITY FAILURES
+                </span>
+                <p className="text-sm font-bold text-[#111111]">
+                  But fail catastrophically when:
+                </p>
+                <ul className="space-y-1.5 font-mono text-xs text-[#333333]">
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> a human suddenly crosses
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> lighting changes & glare spikes
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> an object falls into the path
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> the aisle is partially blocked
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> visibility or sensor clarity drops
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> another robot approaches
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> sensors become unreliable
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[#DC2626] font-bold">•</span> the physical environment changes
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Bottom Insight & LOOP Callout */}
+            <div className="p-6 bg-[#E5E4E0] border border-[#111111] space-y-4">
+              <p className="text-sm sm:text-base text-[#333333] font-sans">
+                You can&apos;t realistically test every combination in the physical world.
+              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#111111] pt-4">
+                <div className="text-base sm:text-lg font-bold text-[#111111] font-sans">
+                  How do you discover the failures before the robot encounters them in reality?
+                </div>
+                <div className="px-5 py-2.5 bg-[#111111] text-white font-mono text-xs font-extrabold uppercase tracking-wider shrink-0 shadow-[2px_2px_0px_#111111]">
+                  That&apos;s LOOP.
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

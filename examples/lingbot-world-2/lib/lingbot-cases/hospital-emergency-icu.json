@@ -1,7 +1,7 @@
 {
   "id": "hospital_icu_4b",
   "name": "🏥 Hospital Emergency Wing & ICU 4B",
-  "description": "Autonomous hospital delivery AMR navigating ICU 4B corridor — WASD moves forward, key 1 = Pedestrian+IV emergence, key 2 = Medication cart cross, key 3 = Glare occlusion, key 4 = Emergency power cut, key 5 = Parked wheelchair",
+  "description": "Autonomous medical delivery AMR — key 1 = ⚡ Battery Drain 100%, key 2 = 📡 Sensor Failure / Glitch, key 3 = Pedestrian+IV Emergence, key 4 = Medication Cart Cross, key 5 = Power Blackout",
   "image": {
     "label": "Hospital Emergency Wing & ICU 4B",
     "src": "/lingbot-cases/hospital_icu_robot.jpg"
@@ -24,6 +24,14 @@
     },
     "events": [
       {
+        "name": "⚡ Battery Drain 100% (Critical Power Loss)",
+        "detail": "The autonomous medical robot AMR suffers an immediate 100% catastrophic battery drain; all motorized wheel drive power cuts out completely, chassis cyan LEDs instantly switch to flashing red alarm strobes, and the AMR drops onto mechanical emergency friction brakes coming to a complete dead stop in the center corridor."
+      },
+      {
+        "name": "📡 Sensor Failure & Vision Glitch",
+        "detail": "The autonomous robot primary LiDAR and optical vision cameras experience critical sensor failure; intense electronic static noise, chromatic RGB sensor glitch artifacts, and partial sensor blindness distort the camera view as the robot executes emergency blind hazard avoidance."
+      },
+      {
         "name": "Pedestrian + IV Emergence",
         "detail": "A patient in a blue hospital gown pushing a chrome IV drip stand steps directly out of occluded room 410 into the robot trajectory, crossing the corridor lane."
       },
@@ -32,16 +40,8 @@
         "detail": "A nurse pushing a heavy multi-tier motorized stainless-steel medication cart crosses horizontally from the right wall into the main corridor lane."
       },
       {
-        "name": "Occlusion Glare & Lens Flare",
-        "detail": "An intense specular glare flare reflects off the polished floor from an overhead emergency surgical lamp, causing severe camera contrast saturation."
-      },
-      {
-        "name": "Emergency Power Cut (PWR-03)",
+        "name": "Emergency Power Cut (Blackout)",
         "detail": "Main overhead ceiling LEDs extinguish instantly; corridor drops into dark ambient lighting illuminated only by pulsing amber emergency backup beacons."
-      },
-      {
-        "name": "Parked Wheelchair Hazard",
-        "detail": "An unattended foldable wheelchair with metallic footrests is partially parked across the left navigation lane, obstructing 40% of the corridor width."
       }
     ],
     "jumpPrompt": "The medical delivery AMR raises its front chassis on active suspension, executing a rapid vertical hop over floor cables.",

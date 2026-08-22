@@ -26,6 +26,7 @@ import {
 const CUSTOM_SCENE_ID = "__custom__";
 import { LayeredSceneEditor } from "@/components/lingbot-world-2/LayeredSceneEditor";
 import { LivePromptInspector } from "@/components/lingbot-world-2/LivePromptInspector";
+import { StressTestReportModal } from "@/components/StressTestReportModal";
 
 type MoveL = "idle" | "forward" | "back";
 type MoveLat = "idle" | "strafe_left" | "strafe_right";
@@ -388,30 +389,32 @@ function HoldChip({
   return (
     <div
       {...handlers}
-      title={empty ? `Slot ${slot + 1} is empty` : displayName}
+      title={empty ? `Slot ${slot + 1} is empty` : `Hold key ${slot + 1} to inject: ${displayName}`}
       aria-disabled={disabled || empty}
       className={cn(
-        "group flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] transition-colors text-left max-w-full select-none",
+        "group flex items-center gap-2 rounded border border-[#111111] px-3 py-1.5 font-mono text-xs transition-all text-left max-w-full select-none cursor-pointer",
         (disabled || empty) && "opacity-40 cursor-not-allowed",
-        !disabled && !empty && "cursor-pointer",
         pressed
-          ? "border-amber-300/80 bg-amber-300/25 text-amber-100"
-          : "border-white/15 bg-white/5 text-white/70 hover:bg-white/10 hover:border-white/25",
+          ? "bg-[#111111] text-white font-bold scale-95 shadow-none"
+          : "bg-white text-[#111111] hover:bg-[#F9F8F6] shadow-[2px_2px_0px_#111111]",
       )}
     >
       <span
         className={cn(
-          "inline-flex h-4 min-w-4 items-center justify-center rounded border px-0.5 text-[9px] font-bold",
+          "inline-flex h-5 min-w-5 items-center justify-center rounded px-1 text-[10px] font-extrabold border border-[#111111]",
           pressed
-            ? "border-amber-300/80 bg-amber-300/30 text-amber-100"
-            : "border-white/25 bg-white/10 text-white/80",
+            ? "bg-white text-[#111111]"
+            : "bg-[#111111] text-white",
         )}
       >
         {slot + 1}
       </span>
-      <span className="truncate">
-        {empty ? <em className="text-white/30">empty</em> : displayName}
+      <span className="truncate font-semibold">
+        {empty ? <em className="text-[#888888]">empty</em> : displayName}
       </span>
+      {pressed && (
+        <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-ping ml-auto" />
+      )}
     </div>
   );
 }
@@ -571,11 +574,9 @@ export function LingbotWorldController({ className }: { className?: string }) {
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
   // The active layered scene = the scene currently driving set_prompt.
-  // Mirrors overrides[activeExampleId] (or the pristine example constant)
-  // and lives separately because the user may pre-edit a different
-  // example while one is running.
-  const [scene, setScene] = useState<StructuredScene | null>(null);
-  const [activeExampleId, setActiveExampleId] = useState<string | null>(null);
+  // Defaults to the first preset (Hospital Emergency Wing) so hazard injections are immediately ready.
+  const [scene, setScene] = useState<StructuredScene | null>(EXAMPLES[0]?.scene ?? null);
+  const [activeExampleId, setActiveExampleId] = useState<string | null>(EXAMPLES[0]?.id ?? null);
 
   // Per-example user edits. Reading the override during applyExample is
   // what makes edits survive re-clicks; clicking an example without an
@@ -595,6 +596,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
   // so the user can audit the current composed prompt and per-layer
   // contributions without leaving the running session.
   const [inspectorOpen, setInspectorOpen] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
 
   // Restore overrides from localStorage on mount. Prune any whose
   // content is byte-equal to the pristine constant — those can happen
@@ -2698,34 +2700,53 @@ export function LingbotWorldController({ className }: { className?: string }) {
         </div>
       )}
 
-      {/* Hold-key event chips, derived from the active scene's events */}
-      {scene && scene.events.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <span className="font-mono text-[9px] text-white/40 uppercase tracking-wider">
-            Hold (keys 1-{scene.events.length} — reverts on release)
-          </span>
-          <div className="flex flex-wrap gap-1">
-            {scene.events.slice(0, MAX_EVENTS).map((event, slot) => {
-              const detailEmpty =
-                typeof event.detail === "string"
-                  ? !event.detail.trim()
-                  : !event.detail.static.trim() && !event.detail.dynamic.trim();
-              return (
-                <HoldChip
-                  key={slot}
-                  slot={slot}
-                  name={event.name}
-                  empty={detailEmpty && !event.name.trim()}
-                  pressed={heldSlots.includes(slot)}
-                  disabled={!isReady}
-                  onPress={() => holdPress(slot)}
-                  onRelease={() => holdRelease(slot)}
-                />
-              );
-            })}
+      {/* Dynamic Stress Test Hazard Injections (Keys 1..5) */}
+      {(() => {
+        const activeScene = scene ?? overrides[activeExampleId ?? "hospital_icu_4b"] ?? STRUCTURED_EXAMPLES[activeExampleId ?? "hospital_icu_4b"]?.scene ?? EXAMPLES[0]?.scene ?? null;
+        if (!activeScene || activeScene.events.length === 0) return null;
+        return (
+          <div className="flex flex-col gap-2 p-3 bg-[#F2F1ED] border border-[#111111] shadow-[2px_2px_0px_#111111]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="font-mono text-[10px] text-[#111111] font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-pulse" />
+                DYNAMIC STRESS TEST HAZARD INJECTION (KEYS 1-{activeScene.events.length})
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[9px] text-[#555555] hidden sm:inline">
+                  [ HOLD KEY TO INJECT ]
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setReportModalOpen(true)}
+                  className="px-2.5 py-1 bg-[#111111] text-white hover:bg-[#282828] font-mono text-[9.5px] font-bold border border-[#111111] shadow-[1px_1px_0px_#111111] cursor-pointer transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  <span>📊</span> AUDIT REPORT &amp; DATASET
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {activeScene.events.slice(0, MAX_EVENTS).map((event, slot) => {
+                const detailEmpty =
+                  typeof event.detail === "string"
+                    ? !event.detail.trim()
+                    : !event.detail.static.trim() && !event.detail.dynamic.trim();
+                return (
+                  <HoldChip
+                    key={slot}
+                    slot={slot}
+                    name={event.name}
+                    empty={detailEmpty && !event.name.trim()}
+                    pressed={heldSlots.includes(slot)}
+                    disabled={!isReady}
+                    onPress={() => holdPress(slot)}
+                    onRelease={() => holdRelease(slot)}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Move (WASD) + Joystick + Look + Mouse-signal HUD */}
       <div className="grid grid-cols-4 gap-3">
@@ -3323,6 +3344,13 @@ export function LingbotWorldController({ className }: { className?: string }) {
         <span className="text-[#111111] font-bold"> Charge</span> = hold to charge a level,
         release for that level&apos;s up→down arc.
       </p>
+
+      <StressTestReportModal
+        isOpen={reportModalOpen}
+        onClose={() => setReportModalOpen(false)}
+        scenarioName={STRUCTURED_EXAMPLES[activeExampleId ?? "hospital_icu_4b"]?.name ?? "🏥 Hospital Emergency Wing & ICU 4B"}
+        scenarioId={activeExampleId ?? "hospital_icu_4b"}
+      />
     </div>
   );
 
