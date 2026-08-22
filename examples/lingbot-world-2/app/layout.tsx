@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LingBot World 2",
+  title: "LOOP | Robotics Data Infrastructure & Physical AI Adaptation Layer",
   description:
-    "Steer a generated world with WASD + arrows from a starting image and prompt.",
+    "Data infrastructure that tests, breaks, and hardens physical AI models before real-world deployment.",
 };
 
 export default function RootLayout({
@@ -12,12 +12,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // The app is dark-only; setting the class here (rather than from a
-  // client effect) lets server-rendered pages like <SetupRequired />
-  // pick up the dark theme tokens too.
   return (
-    <html lang="en" className="dark">
-      <body className="antialiased font-sans">{children}</body>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased bg-[#ECEBE8] text-[#111111] font-sans selection:bg-[#111111] selection:text-white min-h-screen">
+        {children}
+      </body>
     </html>
   );
 }

@@ -260,13 +260,13 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const Hint = ({ children }: { children: React.ReactNode }) => (
-  <p className="font-mono text-[11px] text-white/45 leading-relaxed">
+  <p className="font-mono text-xs text-[#555555] leading-relaxed">
     {children}
   </p>
 );
 
 const FieldLabel = ({ children }: { children: React.ReactNode }) => (
-  <span className="font-mono text-[10px] uppercase tracking-wider text-white/55">
+  <span className="font-mono text-[10px] uppercase tracking-wider text-[#111111] font-extrabold">
     {children}
   </span>
 );
@@ -324,7 +324,7 @@ function ProseTextarea({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className={cn(
-        "block w-full flex-1 min-h-[160px] rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-[12px] leading-relaxed text-white placeholder-white/30 focus:outline-none focus:border-white/30 resize-none",
+        "block w-full flex-1 min-h-[160px] rounded border border-[#111111] bg-white px-3.5 py-2.5 font-mono text-[12px] leading-relaxed text-[#111111] placeholder:text-[#888888] focus:outline-none focus:ring-1 focus:ring-black resize-none shadow-[2px_2px_0px_#111111]",
         className,
       )}
     />
@@ -380,12 +380,12 @@ function VersionKeyInput({
         }}
         placeholder="version key"
         className={cn(
-          "h-8 w-44 font-mono text-[12px]",
-          error && "border-red-500/60",
+          "h-8 w-44 font-mono text-[12px] bg-white border border-[#111111] text-[#111111]",
+          error && "border-red-500",
         )}
       />
       {error && (
-        <span className="font-mono text-[10px] text-red-400/80">{error}</span>
+        <span className="font-mono text-[10px] text-red-600">{error}</span>
       )}
     </div>
   );
@@ -413,12 +413,12 @@ function VersionCard({
   return (
     <div
       className={cn(
-        "rounded-md border bg-white/[0.025] p-4 flex flex-col gap-3 flex-1 min-h-[260px]",
+        "rounded border-2 border-[#111111] bg-[#F2F1ED] p-4 flex flex-col gap-3 flex-1 min-h-[260px] shadow-[3px_3px_0px_#111111]",
         status === "added"
-          ? "border-emerald-300/40"
+          ? "border-emerald-600"
           : status === "edited"
-            ? "border-amber-300/35"
-            : "border-white/10",
+            ? "border-amber-600"
+            : "border-[#111111]",
       )}
     >
       <div className="flex items-center gap-3 shrink-0 flex-wrap">
@@ -443,13 +443,13 @@ function VersionCard({
           />
         )}
         {isDefault && (
-          <span className="font-mono text-[10px] text-white/35">
+          <span className="font-mono text-[10px] text-[#777777]">
             required — used when no event overrides this layer
           </span>
         )}
         <div className="ml-auto">
           {!isDefault && (
-            <Button size="sm" variant="ghost" onClick={onRemove}>
+            <Button size="sm" variant="ghost" onClick={onRemove} className="text-red-600 hover:bg-red-50 font-mono text-xs">
               Delete
             </Button>
           )}
@@ -534,9 +534,12 @@ function BasePanel({
         })}
       </div>
       <div className="shrink-0">
-        <Button size="sm" variant="outline" onClick={add}>
+        <button
+          onClick={add}
+          className="px-4 py-2 bg-white hover:bg-black/5 text-[#111111] font-mono text-xs font-extrabold uppercase border-2 border-[#111111] shadow-[2px_2px_0px_#111111] cursor-pointer transition-colors"
+        >
           + Add base version
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -602,7 +605,7 @@ function ShotPanel({
         )}
       </Hint>
       {diff && diff.removed.size > 0 && (
-        <p className="font-mono text-[11px] text-red-300/80">
+        <p className="font-mono text-[11px] text-red-600">
           Removed from pristine: {[...diff.removed].join(", ")}.
         </p>
       )}
@@ -644,7 +647,7 @@ function ShotPanel({
                     }
                     className={
                       staticChanged && !isAdded
-                        ? "border-amber-300/40"
+                        ? "border-amber-600"
                         : undefined
                     }
                   />
@@ -666,7 +669,7 @@ function ShotPanel({
                     }
                     className={
                       dynamicChanged && !isAdded
-                        ? "border-amber-300/40"
+                        ? "border-amber-600"
                         : undefined
                     }
                   />
@@ -677,9 +680,12 @@ function ShotPanel({
         })}
       </div>
       <div className="shrink-0">
-        <Button size="sm" variant="outline" onClick={add}>
+        <button
+          onClick={add}
+          className="px-4 py-2 bg-white hover:bg-black/5 text-[#111111] font-mono text-xs font-extrabold uppercase border-2 border-[#111111] shadow-[2px_2px_0px_#111111] cursor-pointer transition-colors"
+        >
           + Add {layer} version
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -698,10 +704,10 @@ function VersionPicker({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-8 rounded-md border border-white/15 bg-white/[0.04] px-2 font-mono text-[11px] text-white focus:outline-none focus:border-white/30"
+      className="h-8 rounded border border-[#111111] bg-white px-2.5 font-mono text-[11px] text-[#111111] focus:outline-none focus:ring-1 focus:ring-black cursor-pointer shadow-[1px_1px_0px_#111111]"
     >
       {options.map((opt) => (
-        <option key={opt} value={opt} className="bg-neutral-900">
+        <option key={opt} value={opt} className="bg-white text-black">
           {opt}
         </option>
       ))}
@@ -993,14 +999,13 @@ function EventsPanel({
         ))}
       </div>
       <div className="shrink-0">
-        <Button
-          size="sm"
-          variant="outline"
+        <button
           onClick={addEvent}
           disabled={scene.events.length >= 9}
+          className="px-4 py-2 bg-white hover:bg-black/5 text-[#111111] font-mono text-xs font-extrabold uppercase border-2 border-[#111111] shadow-[2px_2px_0px_#111111] cursor-pointer transition-colors disabled:opacity-40"
         >
           + Add event ({scene.events.length}/9)
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -1018,32 +1023,32 @@ function PreviewPanel({ scene }: { scene: StructuredScene }) {
   return (
     <div className="flex flex-col gap-4">
       <Hint>
-        Live preview of <code>composePrompt(scene, isMoving, heldSlots)</code> —
-        the exact string the runtime sends to <code>set_prompt</code>. Toggle
+        Live preview of <code className="bg-black/5 text-[#111111] font-bold px-1 rounded">composePrompt(scene, isMoving, heldSlots)</code> —
+        the exact string the runtime sends to <code className="bg-black/5 text-[#111111] font-bold px-1 rounded">set_prompt</code>. Toggle
         WASD-state and held events to see how the layered registries combine.
       </Hint>
 
       <div className="flex flex-wrap items-center gap-3">
-        <label className="flex items-center gap-2 font-mono text-[12px] text-white/75 cursor-pointer">
+        <label className="flex items-center gap-2 font-mono text-xs text-[#111111] font-bold cursor-pointer">
           <input
             type="checkbox"
             checked={isMoving}
             onChange={(e) => setIsMoving(e.target.checked)}
-            className="accent-amber-300"
+            className="accent-black"
           />
           WASD held (isMoving)
         </label>
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1.5">
           {scene.events.map((event, i) => (
             <button
               key={i}
               type="button"
               onClick={() => toggleHeld(i)}
               className={cn(
-                "rounded-full border px-3 py-1 font-mono text-[11px] transition-colors",
+                "rounded border px-3 py-1 font-mono text-[11px] transition-colors cursor-pointer",
                 held.includes(i)
-                  ? "border-amber-300/80 bg-amber-300/25 text-amber-100"
-                  : "border-white/15 bg-white/5 text-white/70 hover:bg-white/10",
+                  ? "border-[#111111] bg-[#111111] text-white font-bold"
+                  : "border-[#111111] bg-white text-[#111111] hover:bg-black/5 shadow-[1px_1px_0px_#111111]",
               )}
             >
               {i + 1}. {event.name.trim() || "(unnamed)"}
@@ -1052,17 +1057,17 @@ function PreviewPanel({ scene }: { scene: StructuredScene }) {
         </div>
       </div>
 
-      <div className="rounded-md border border-white/10 bg-black/40 p-4 w-full flex flex-col gap-2">
+      <div className="rounded border-2 border-[#111111] bg-white p-4 w-full flex flex-col gap-2 shadow-[3px_3px_0px_#111111]">
         <div className="flex items-center gap-3 flex-wrap">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-white/40">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#111111] font-extrabold">
             composed prompt ({composed.length} chars)
           </div>
-          <div className="ml-auto flex items-center gap-2 flex-wrap font-mono text-[10px] text-white/55">
+          <div className="ml-auto flex items-center gap-2 flex-wrap font-mono text-[10px] text-[#555555]">
             {(["base", "camera", "movement", "event"] as SegmentKind[]).map(
               (k) => {
                 const c = SEGMENT_PALETTE[k];
                 return (
-                  <span key={k} className="inline-flex items-center gap-1.5">
+                  <span key={k} className="inline-flex items-center gap-1.5 font-bold">
                     <span className={cn("w-2 h-2 rounded-full", c.dot)} />
                     {c.label}
                   </span>
@@ -1072,9 +1077,9 @@ function PreviewPanel({ scene }: { scene: StructuredScene }) {
           </div>
         </div>
         {segments.length === 0 ? (
-          <p className="font-mono text-[12px] italic text-white/30">(empty)</p>
+          <p className="font-mono text-xs italic text-[#777777]">(empty)</p>
         ) : (
-          <p className="font-mono text-[12px] leading-relaxed break-words">
+          <p className="font-mono text-xs leading-relaxed break-words text-[#111111]">
             {segments.map((s, i) => {
               const c = SEGMENT_PALETTE[s.kind];
               return (
@@ -1248,21 +1253,21 @@ export function LayeredSceneEditor({
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
-        className="relative flex h-full max-h-[92vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl border border-white/10 bg-neutral-950 shadow-2xl"
+        className="relative flex h-full max-h-[92vh] w-full max-w-7xl flex-col overflow-hidden rounded-xs border-2 border-[#111111] bg-[#ECEBE8] text-[#111111] shadow-[8px_8px_0px_#111111]"
       >
         {/* Header */}
-        <div className="flex items-center gap-4 border-b border-white/10 px-6 py-4">
+        <div className="flex items-center gap-4 border-b border-[#111111] bg-[#ECEBE8] px-6 py-4">
           <div className="flex flex-col gap-0.5 min-w-0">
-            <h2 className="font-mono text-sm uppercase tracking-widest text-white truncate">
+            <h2 className="font-mono text-sm uppercase tracking-widest text-[#111111] font-extrabold truncate">
               {title ?? "Edit layered scene"}
             </h2>
             {subtitle && (
-              <span className="font-mono text-[10px] text-white/45 truncate">
+              <span className="font-mono text-[10.5px] text-[#555555] truncate">
                 {subtitle}
               </span>
             )}
           </div>
-          <span className="font-mono text-[10px] text-white/35 shrink-0">
+          <span className="font-mono text-[10px] text-[#777777] shrink-0">
             Auto-saved to browser
           </span>
           <div className="ml-auto flex items-center gap-2 shrink-0">
@@ -1272,18 +1277,22 @@ export function LayeredSceneEditor({
                 variant="ghost"
                 onClick={onReset}
                 title="Discard your edits and revert this example to its pristine prompt"
+                className="font-mono text-xs text-[#555555] hover:text-black cursor-pointer"
               >
                 {resetLabel ?? "Reset"}
               </Button>
             )}
-            <Button size="sm" onClick={onClose}>
+            <button
+              onClick={onClose}
+              className="px-5 py-2 bg-[#111111] hover:bg-[#282828] text-white font-extrabold font-mono text-xs uppercase cursor-pointer border border-[#111111] shadow-[2px_2px_0px_#111111] transition-colors"
+            >
               Done
-            </Button>
+            </button>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex shrink-0 border-b border-white/10 px-6 overflow-x-auto">
+        <div className="flex shrink-0 border-b border-[#111111] bg-[#E5E4E0] px-6 overflow-x-auto">
           {TABS.map((t) => {
             const active = tab === t.id;
             const edits = editCounts[t.id];
@@ -1293,18 +1302,18 @@ export function LayeredSceneEditor({
                 type="button"
                 onClick={() => setTab(t.id)}
                 className={cn(
-                  "relative px-4 py-3 font-mono text-[11px] uppercase tracking-wider transition-colors flex items-center gap-1.5",
-                  active ? "text-white" : "text-white/45 hover:text-white/75",
+                  "relative px-4 py-3 font-mono text-[11px] uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer",
+                  active ? "text-[#111111] font-extrabold" : "text-[#555555] hover:text-[#111111]",
                 )}
               >
                 <span>{t.label}</span>
                 {t.id !== "preview" && (
                   <span
                     className={cn(
-                      "inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px]",
+                      "inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px] font-bold",
                       active
-                        ? "bg-amber-300/20 text-amber-200"
-                        : "bg-white/10 text-white/55",
+                        ? "bg-[#111111] text-white"
+                        : "bg-black/10 text-[#111111]",
                     )}
                   >
                     {counts[t.id]}
@@ -1313,24 +1322,21 @@ export function LayeredSceneEditor({
                 {edits > 0 && (
                   <span
                     title={`${edits} edit${edits === 1 ? "" : "s"} vs pristine in this tab`}
-                    className="inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px] bg-amber-300/25 text-amber-200 border border-amber-300/40"
+                    className="inline-flex h-4 min-w-4 items-center justify-center rounded px-1 text-[9px] bg-amber-200 text-amber-900 border border-amber-400 font-bold"
                   >
                     {edits}
                   </span>
                 )}
                 {active && (
-                  <span className="absolute inset-x-2 bottom-0 h-px bg-amber-300" />
+                  <span className="absolute inset-x-2 bottom-0 h-[2px] bg-[#111111]" />
                 )}
               </button>
             );
           })}
         </div>
 
-        {/* Body — outer overflow handles the case where total content
-            exceeds viewport (e.g. many version cards); the inner wrapper
-            is flex-column with min-h-full so panels can stretch their
-            single textarea card to fill the canvas when content is short. */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-6 py-5">
+        {/* Body */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-6 py-5 bg-[#ECEBE8]">
           <div className="flex flex-col min-h-full">
             {tab === "base" && (
               <BasePanel
@@ -1372,8 +1378,8 @@ export function LayeredSceneEditor({
                     value={scene.jumpPrompt ?? ""}
                     onChange={(e) => setJumpPrompt(e.target.value)}
                     rows={2}
-                    placeholder="e.g. The dragon beats its wings and surges upward."
-                    className="w-full rounded border border-white/15 bg-white/5 px-3 py-2 font-mono text-xs text-white/90 placeholder-white/25 focus:outline-none focus:border-white/40 resize-y"
+                    placeholder="e.g. Robot arm initiates sudden rapid emergency retraction."
+                    className="w-full rounded border border-[#111111] bg-white px-3.5 py-2 font-mono text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:ring-1 focus:ring-black resize-y shadow-[2px_2px_0px_#111111]"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -1382,8 +1388,8 @@ export function LayeredSceneEditor({
                     value={scene.crouchPrompt ?? ""}
                     onChange={(e) => setCrouchPrompt(e.target.value)}
                     rows={2}
-                    placeholder="e.g. The dragon folds its wings and dives downward."
-                    className="w-full rounded border border-white/15 bg-white/5 px-3 py-2 font-mono text-xs text-white/90 placeholder-white/25 focus:outline-none focus:border-white/40 resize-y"
+                    placeholder="e.g. AMR base lowers suspension and engages brake protocol."
+                    className="w-full rounded border border-[#111111] bg-white px-3.5 py-2 font-mono text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:ring-1 focus:ring-black resize-y shadow-[2px_2px_0px_#111111]"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -1392,8 +1398,8 @@ export function LayeredSceneEditor({
                     value={scene.standPrompt ?? ""}
                     onChange={(e) => setStandPrompt(e.target.value)}
                     rows={2}
-                    placeholder="e.g. The dragon spreads its wings and rises back up."
-                    className="w-full rounded border border-white/15 bg-white/5 px-3 py-2 font-mono text-xs text-white/90 placeholder-white/25 focus:outline-none focus:border-white/40 resize-y"
+                    placeholder="e.g. AMR base rises to cruising height and resumes transit."
+                    className="w-full rounded border border-[#111111] bg-white px-3.5 py-2 font-mono text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:ring-1 focus:ring-black resize-y shadow-[2px_2px_0px_#111111]"
                   />
                 </div>
               </div>

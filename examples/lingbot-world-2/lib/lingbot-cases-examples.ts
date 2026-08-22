@@ -19,12 +19,18 @@
 
 import type { StructuredExample } from "@/lib/lingbot-world-prompts";
 
+import hospitalEmergencyIcu from "./lingbot-cases/hospital-emergency-icu.json";
+import warehouseLogisticsAisle from "./lingbot-cases/warehouse-logistics-aisle.json";
+import smartFactoryAssembly from "./lingbot-cases/smart-factory-assembly.json";
 import noirAlleyPatrol from "./lingbot-cases/noir-alley-patrol.json";
 import battlefieldHorseman from "./lingbot-cases/battlefield-horseman.json";
 import jetSkiCruise from "./lingbot-cases/jet-ski-cruise.json";
 
-// The display order of the example chips. Add new examples here.
+// The display order of the example chips. Physical AI testing scenarios first.
 export const LINGBOT_CASES_EXAMPLE_LIST: StructuredExample[] = [
+  hospitalEmergencyIcu,
+  warehouseLogisticsAisle,
+  smartFactoryAssembly,
   noirAlleyPatrol,
   battlefieldHorseman,
   jetSkiCruise,

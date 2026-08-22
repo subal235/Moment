@@ -1,32 +1,18 @@
 "use client";
 
+import React, { useState, useEffect, useRef } from "react";
 import {
   LingbotWorld2MainVideoView,
   LingbotWorld2Provider,
   useLingbotWorld2,
 } from "@reactor-models/lingbot-world-2";
-import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { SnapClip } from "@/components/SnapClip";
 import { LingbotWorldController } from "@/components/lingbot-world-2/LingbotWorldController";
 
-// Reactor coordinator the SDK connects to. Override with
-// NEXT_PUBLIC_COORDINATOR_URL in .env.local if you need a different one.
 const API_URL =
   process.env.NEXT_PUBLIC_COORDINATOR_URL ?? "https://api.reactor.inc";
 
-// JWT resolver passed to <LingbotWorld2Provider getJwt>.
-//
-// `@reactor-team/js-sdk` ≥ 2.10.1 takes a resolver instead of a static
-// string so the SDK can mint a fresh JWT on every Coordinator HTTP hop
-// — uploads, clip manifests, ICE refreshes, SDP renegotiation. With a
-// static string those hops 401 the moment the token ages out.
-//
-// We don't write a cache layer here either. The route returns the JWT
-// with `Cache-Control: private, max-age=<seconds-until-expiry>`, so
-// the browser's HTTP cache serves repeat calls (after a reload, route
-// change, HMR cycle, etc.) without ever hitting our server — until
-// the JWT actually expires.
 async function fetchToken(): Promise<string> {
   const r = await fetch("/api/reactor/token");
   if (!r.ok) {
@@ -37,154 +23,230 @@ async function fetchToken(): Promise<string> {
   return jwt;
 }
 
-function StatusBar() {
+import { HeroVisualizer } from "@/components/HeroVisualizer";
+
+function HeroPointCloudStream() {
+  const { status } = useLingbotWorld2();
+  return <HeroVisualizer status={status} />;
+}
+
+function SimulatorSection() {
+  const { sidebar, controls } = LingbotWorldController({});
   const { status, connect, disconnect, reset } = useLingbotWorld2();
 
-  const dotColor =
-    status === "ready"
-      ? "#4ade80"
-      : status === "connecting" || status === "waiting"
-        ? "#facc15"
-        : "rgba(255,255,255,0.3)";
-
-  const statusLabel =
-    status === "ready"
-      ? "Connected"
-      : status === "waiting"
-        ? "Waiting for GPU..."
-        : status === "connecting"
-          ? "Connecting..."
-          : "Disconnected";
-
   return (
-    <div
-      className="flex items-center justify-between px-4 py-2 shrink-0"
-      style={{
-        background: "rgba(255,255,255,0.04)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-      }}
-    >
-      <div className="flex items-center gap-3">
+    <section id="simulator" className="border-t border-[#111111] bg-[#ECEBE8] text-[#111111]">
+      {/* Section Header Bar */}
+      <div className="border-b border-[#111111] bg-[#ECEBE8] px-6 py-4 flex flex-wrap items-center justify-between font-mono text-xs">
+        <div className="flex items-center gap-3">
+          <span className="font-bold uppercase tracking-wider text-[#111111]">
+            [ 03 / INTERACTIVE PHYSICAL AI SIMULATOR ]
+          </span>
+          <span className="text-[#666666] hidden sm:inline text-[11px]">
+            Reactor LingBot World 2 • 60 FPS WebRTC
+          </span>
+        </div>
+
         <div className="flex items-center gap-2">
-          <div
-            className="w-2 h-2 rounded-full transition-colors"
-            style={{
-              backgroundColor: dotColor,
-              animation:
-                status === "connecting" || status === "waiting"
-                  ? "statusPulse 1.5s infinite"
-                  : "none",
-            }}
-          />
-          <span className="font-mono text-xs text-white/50">{statusLabel}</span>
-        </div>
-        {status === "disconnected" ? (
-          <Button
-            size="xs"
-            variant="secondary"
-            onClick={() => connect()}
-            className="h-7 px-3 font-mono text-xs bg-white/10 border-white/15 hover:bg-white/15 text-white"
-          >
-            Connect
-          </Button>
-        ) : (
-          <Button
-            size="xs"
-            variant="secondary"
-            onClick={() => disconnect()}
-            className="h-7 px-3 font-mono text-xs bg-white/10 border-white/15 hover:bg-white/15 text-white"
-          >
-            {status === "connecting" || status === "waiting"
-              ? "Cancel"
-              : "Disconnect"}
-          </Button>
-        )}
-        {status === "ready" && (
-          <Button
-            size="xs"
-            variant="secondary"
-            onClick={() => reset().catch(console.error)}
-            className="h-7 px-3 font-mono text-xs bg-red-500/15 border-red-500/20 hover:bg-red-500/25 text-red-400"
-          >
-            Reset
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function MainContent() {
-  const { sidebar, controls } = LingbotWorldController({});
-
-  return (
-    <main className="relative z-10 flex-1 min-h-0 flex flex-col px-4 sm:px-6 pb-4 sm:pb-6 pt-3 max-lg:overflow-y-auto lg:overflow-hidden">
-      <div className="mx-auto flex w-full max-w-7xl min-w-0 flex-1 min-h-0 flex-col gap-4">
-        <div className="flex min-w-0 max-lg:flex-none flex-col gap-4 lg:min-h-0 lg:flex-1 lg:flex-row lg:gap-6">
-          {/* Sidebar — left on desktop, below on mobile. <SnapClip /> sits
-              at the bottom: it's model-agnostic, self-hides while the
-              connection isn't ready, and needs no phase awareness. */}
-          <div className="order-2 flex min-h-0 min-w-0 flex-col gap-4 lg:order-1 lg:w-[min(100%,380px)] lg:max-w-[380px] lg:shrink-0 lg:overflow-y-auto lg:pr-1">
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-3 sm:p-4">
-              {sidebar}
+          {status === "disconnected" ? (
+            <button
+              onClick={() => connect()}
+              className="px-4 py-1.5 bg-[#111111] text-white hover:bg-[#333] font-bold text-[11px] uppercase tracking-wider cursor-pointer transition-colors"
+            >
+              CONNECT STREAM →
+            </button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-[#00A86B] font-bold">● CONNECTED</span>
+              <button
+                onClick={() => disconnect()}
+                className="px-3 py-1 border border-[#111111] bg-white hover:bg-black/5 text-black font-bold text-[10px] cursor-pointer"
+              >
+                DISCONNECT
+              </button>
+              <button
+                onClick={() => reset().catch(console.error)}
+                className="px-3 py-1 bg-red-600 text-white hover:bg-red-700 font-bold text-[10px] cursor-pointer"
+              >
+                RESET
+              </button>
             </div>
-            <SnapClip />
+          )}
+        </div>
+      </div>
+
+      {/* Simulator Body */}
+      <div className="flex flex-col lg:flex-row border-b border-[#111111]">
+        {/* Left: Scenarios Sidebar */}
+        <div className="lg:w-[380px] border-b lg:border-b-0 lg:border-r border-[#111111] p-5 space-y-4 bg-[#F2F1ED]">
+          <div className="font-mono text-[10px] uppercase tracking-wider font-extrabold text-[#111111] border-b border-[#111111] pb-2">
+            PHYSICAL AI SCENARIO MATRIX
+          </div>
+          {sidebar}
+          <SnapClip />
+        </div>
+
+        {/* Right: Main Viewport + Telemetry Controls */}
+        <div className="flex-1 p-5 space-y-4 bg-[#ECEBE8]">
+          <div className="relative bg-black border-2 border-[#111111] shadow-[4px_4px_0px_#111111] aspect-video overflow-hidden rounded-xs">
+            <LingbotWorld2MainVideoView
+              videoObjectFit="cover"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                backgroundColor: "#05070D",
+              }}
+            />
           </div>
 
-          {/* Video + controls — stacked in the right column */}
-          <div className="order-1 flex min-w-0 flex-col gap-4 lg:order-2 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
-            <div className="relative bg-black rounded-xl overflow-hidden border border-white/[0.08] aspect-video">
-              <LingbotWorld2MainVideoView
-                videoObjectFit="contain"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            </div>
-
-            <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-3 sm:p-4">
-              {controls}
-            </div>
+          <div className="p-4 bg-white border-2 border-[#111111] shadow-[3px_3px_0px_#111111] text-[#111111] rounded-xs">
+            {controls}
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 }
 
-// The client tree. LingbotWorld2Provider owns the WebRTC connection
-// lifecycle — it auto-disconnects on unmount and on `beforeunload`, so
-// don't call connect()/disconnect() from a useEffect yourself.
-//
-// We deliberately do NOT pass `autoConnect: true` here. The user clicks
-// "Connect" so they see the disconnected → connecting → waiting → ready
-// state machine first-hand. Flip it on in your own product if you'd
-// rather skip straight to "ready".
-//
-// `getJwt` is a module-level function on purpose — stable identity, no
-// re-render churn. The provider also auto-stabilizes inline arrows via
-// `useRef + useMemo`, so wrapping in `useCallback` is never needed.
 export function LingbotWorld2App() {
   return (
-    <>
-      <style>{`
-        @keyframes statusPulse {
-          0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
-        }
-      `}</style>
-
-      <div className="relative h-screen flex flex-col overflow-hidden bg-zinc-950">
+    <LingbotWorld2Provider apiUrl={API_URL} getJwt={fetchToken}>
+      <div className="min-h-screen flex flex-col bg-[#ECEBE8] text-[#111111] font-sans selection:bg-[#111111] selection:text-white">
+        
+        {/* 1. LOOP HEADER */}
         <Header />
-        <LingbotWorld2Provider apiUrl={API_URL} getJwt={fetchToken}>
-          <div className="relative z-10 shrink-0">
-            <StatusBar />
+
+        {/* 2. HERO SECTION (SPLIT GRID) */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 border-b border-[#111111]">
+          
+          {/* Left Column: Visualizer Viewport */}
+          <div className="border-b lg:border-b-0 lg:border-r border-[#111111] p-6 lg:p-10 flex flex-col justify-center">
+            <HeroPointCloudStream />
           </div>
-          <MainContent />
-        </LingbotWorld2Provider>
+
+          {/* Right Column: Hero Statement & CTAs */}
+          <div className="p-6 lg:p-14 flex flex-col justify-center space-y-8">
+            <h1 className="text-2xl sm:text-3xl lg:text-[34px] leading-[1.25] font-normal text-[#111111] tracking-tight">
+              Data infrastructure that tests, breaks, and hardens physical AI models before real-world deployment.
+            </h1>
+
+            <div className="space-y-4">
+              <div className="flex items-stretch gap-0 font-mono text-xs">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("simulator");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="px-6 py-3 bg-[#111111] text-white hover:bg-[#282828] font-bold tracking-tight cursor-pointer transition-colors border border-[#111111]"
+                >
+                  run stress test ↗
+                </button>
+
+                <button
+                  onClick={() => {
+                    const el = document.getElementById("simulator");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="px-6 py-3 bg-transparent hover:bg-black/5 text-[#111111] font-bold tracking-tight cursor-pointer transition-colors border border-l-0 border-[#111111]"
+                >
+                  book a pilot
+                </button>
+              </div>
+
+              <p className="text-xs text-[#555555] leading-relaxed max-w-md font-sans">
+                Stress-test your navigation, perception, and manipulation policies against thousands of dynamic edge cases. Export verified datasets to Hugging Face.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "THE PROBLEM" EDITORIAL SECTION */}
+        <section id="problem" className="grid grid-cols-1 md:grid-cols-[160px_1fr] border-b border-[#111111]">
+          {/* Left Column: Vertical Label */}
+          <div className="border-b md:border-b-0 md:border-r border-[#111111] p-6 font-mono text-xs text-[#666666] uppercase tracking-wider">
+            the<br />problem
+          </div>
+
+          {/* Right Column: Editorial Headline & Copy */}
+          <div className="p-8 lg:p-14 space-y-4 bg-[#F2F1ED]">
+            <h2
+              className="text-3xl sm:text-4xl lg:text-5xl text-[#111111] font-normal tracking-tight"
+              style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+            >
+              Why physical AI models fail in the real world
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#444444] leading-relaxed max-w-3xl font-sans">
+              Robotics foundation models learn nominal trajectories quickly. But they fail catastrophically on the long tail of physical reality—unexpected specular glare, occluded pedestrians emerging from blind corners, sensor dropouts, and multi-robot right-of-way contention.
+            </p>
+            <p className="text-xs sm:text-sm text-[#666666] leading-relaxed max-w-3xl font-sans">
+              Hardware test fleets are expensive and dangerous to crash; static synthetic simulators are too clean and lack physical world fidelity. LOOP bridges the gap with continuous generative perturbation testing.
+            </p>
+          </div>
+        </section>
+
+        {/* 4. "THE ENGINE" / SOLUTION BREAKDOWN SECTION */}
+        <section id="solution" className="grid grid-cols-1 md:grid-cols-[160px_1fr] border-b border-[#111111]">
+          <div className="border-b md:border-b-0 md:border-r border-[#111111] p-6 font-mono text-xs text-[#666666] uppercase tracking-wider">
+            the<br />engine
+          </div>
+
+          <div className="p-8 lg:p-14 space-y-8 bg-[#ECEBE8]">
+            <h2
+              className="text-3xl sm:text-4xl lg:text-5xl text-[#111111] font-normal tracking-tight"
+              style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+            >
+              Continuous adversarial simulation with Reactor world models
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+              <div className="p-5 bg-white border border-[#111111] space-y-2">
+                <span className="font-mono text-xs font-bold text-[#111111] block">01 / BREAK IT</span>
+                <h3 className="font-bold text-sm text-[#111111]">Dynamic Hazard Ingestion</h3>
+                <p className="text-xs text-[#555555] leading-relaxed">
+                  Inject 5 classes of repeatable perturbations in-flight—pedestrian emergences, floor glare, power failure, and sensor occlusions.
+                </p>
+              </div>
+
+              <div className="p-5 bg-white border border-[#111111] space-y-2">
+                <span className="font-mono text-xs font-bold text-[#111111] block">02 / LEARN FROM IT</span>
+                <h3 className="font-bold text-sm text-[#111111]">Sub-Second Telemetry Audit</h3>
+                <p className="text-xs text-[#555555] leading-relaxed">
+                  Record exact reaction latencies, minimum clearance envelopes, and ISO 3691-4 safety ring violations across thousands of runs.
+                </p>
+              </div>
+
+              <div className="p-5 bg-white border border-[#111111] space-y-2">
+                <span className="font-mono text-xs font-bold text-[#111111] block">03 / PROVE IT</span>
+                <h3 className="font-bold text-sm text-[#111111]">Open Data Export</h3>
+                <p className="text-xs text-[#555555] leading-relaxed">
+                  Package validated failure &amp; recovery episodes into LeRobot and Open X-Embodiment formats to harden your next policy checkpoint.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. LIVE SIMULATION & SCENARIO TESTING ENGINE */}
+        <SimulatorSection />
+
+        {/* 6. FOOTER */}
+        <footer className="px-6 py-6 font-mono text-[11px] text-[#666666] flex flex-wrap items-center justify-between border-t border-[#111111] bg-[#ECEBE8]">
+          <div>
+            <span>© 2026 LOOP — Physical AI Continuous Testing &amp; Data Engine</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="https://huggingface.co/datasets" target="_blank" rel="noopener noreferrer" className="hover:underline">
+              [ hugging face dataset ]
+            </a>
+            <span>Powered by Reactor LingBot World 2</span>
+          </div>
+        </footer>
+
       </div>
-    </>
+    </LingbotWorld2Provider>
   );
 }

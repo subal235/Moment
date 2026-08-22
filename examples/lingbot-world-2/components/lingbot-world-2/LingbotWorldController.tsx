@@ -288,11 +288,11 @@ function PadButton({
       disabled={disabled}
       {...handlers}
       className={cn(
-        "h-10 w-10 rounded border font-mono text-xs select-none transition-all",
+        "h-10 w-10 rounded border font-mono text-xs select-none transition-all cursor-pointer",
         "disabled:opacity-30 disabled:cursor-not-allowed",
         pressed
-          ? "bg-amber-300/20 border-amber-300/60 text-amber-200 scale-95"
-          : "bg-white/5 border-white/15 text-white/80 hover:bg-white/10 active:scale-95",
+          ? "bg-[#111111] border-[#111111] text-white scale-95"
+          : "bg-white border-[#111111] text-[#111111] hover:bg-black/5 active:scale-95 shadow-[1px_1px_0px_#111111]",
         className,
       )}
     >
@@ -340,11 +340,11 @@ function HoldBtn({
       title={title}
       {...handlers}
       className={cn(
-        "h-7 w-11 rounded border font-mono text-[10px] select-none transition-all",
+        "h-10 w-12 rounded border font-mono text-xs select-none transition-all cursor-pointer",
         "disabled:opacity-30 disabled:cursor-not-allowed",
         lit
-          ? "bg-amber-300/20 border-amber-300/60 text-amber-200 scale-95"
-          : "bg-white/5 border-white/15 text-white/80 hover:bg-white/10 active:scale-95",
+          ? "bg-[#111111] border-[#111111] text-white scale-95"
+          : "bg-white border-[#111111] text-[#111111] hover:bg-black/5 active:scale-95 shadow-[1px_1px_0px_#111111]",
         className,
       )}
     >
@@ -2070,10 +2070,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
       {/* Examples — click to auto-send image + prompt + start */}
       {EXAMPLES.length > 0 && (
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-mono uppercase tracking-widest text-primary">
+          <span className="text-xs font-mono uppercase tracking-widest font-extrabold text-[#111111]">
             Quick Start
           </span>
-          <p className="text-[10px] text-white/40 leading-snug">
+          <p className="text-[10px] text-[#555555] leading-snug">
             Click an example to auto-load its image, prompt, and start
             generating. Click ✎ to preset / customize its layered prompt; your
             edits persist across re-clicks until you press ↺ to revert.
@@ -2096,10 +2096,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 <div
                   key={ex.id}
                   className={cn(
-                    "group flex items-stretch gap-1.5 rounded-lg border transition-all",
+                    "group flex items-stretch gap-0 rounded border border-[#111111] transition-all cursor-pointer",
                     isActive
-                      ? "border-amber-300/60 bg-amber-300/10"
-                      : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/20",
+                      ? "bg-[#ECEBE8] shadow-[2px_2px_0px_#111111]"
+                      : "bg-white hover:bg-[#F9F8F6] shadow-[2px_2px_0px_#111111]",
                   )}
                 >
                   <button
@@ -2108,11 +2108,11 @@ export function LingbotWorldController({ className }: { className?: string }) {
                     disabled={applyDisabled}
                     title="Apply this example (loads image and starts generation)"
                     className={cn(
-                      "relative flex items-center gap-3 flex-1 min-w-0 p-2 text-left rounded-l-lg",
-                      "disabled:opacity-50 disabled:cursor-not-allowed",
+                      "relative flex items-center gap-3 flex-1 min-w-0 p-2 text-left",
+                      "disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer",
                     )}
                   >
-                    <div className="relative shrink-0 w-24 h-14 rounded-md overflow-hidden border border-white/10">
+                    <div className="relative shrink-0 w-20 h-12 rounded overflow-hidden border border-[#111111]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={ex.image.src}
@@ -2121,32 +2121,32 @@ export function LingbotWorldController({ className }: { className?: string }) {
                       />
                       {isLoading && (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <div className="w-4 h-4 border-2 border-amber-300 border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         </div>
                       )}
                     </div>
                     <div className="flex flex-col gap-0.5 min-w-0 flex-1">
                       <div className="flex items-center gap-1.5 min-w-0">
-                        <span className="font-mono text-sm text-white font-medium truncate">
+                        <span className="font-mono text-xs text-[#111111] font-extrabold truncate">
                           {ex.name}
                         </span>
                         {hasOverride && (
                           <span
                             title="You've customized this prompt — your edits load whenever this example is applied. Press ↺ on the right to revert to the built-in default."
-                            className="shrink-0 font-mono text-[9px] uppercase tracking-wider rounded bg-amber-300/15 text-amber-200 px-1.5 py-0.5 border border-amber-300/30"
+                            className="shrink-0 font-mono text-[8.5px] uppercase tracking-wider rounded bg-[#111111] text-white px-1 py-0.5"
                           >
                             edited
                           </span>
                         )}
                       </div>
                       {ex.description && (
-                        <span className="font-mono text-[10px] text-white/50 leading-snug">
+                        <span className="font-mono text-[9.5px] text-[#555555] leading-snug line-clamp-2">
                           {ex.description}
                         </span>
                       )}
                     </div>
                     {isActive && (
-                      <div className="shrink-0 w-2 h-2 rounded-full bg-amber-300" />
+                      <div className="shrink-0 w-2 h-2 rounded-full bg-[#00E599]" />
                     )}
                   </button>
                   {hasOverride && (
@@ -2155,8 +2155,8 @@ export function LingbotWorldController({ className }: { className?: string }) {
                       onClick={() => clearOverrideFor(ex.id)}
                       title={`Revert "${ex.name}" to the built-in default prompt (discards your edits)`}
                       className={cn(
-                        "shrink-0 w-9 flex items-center justify-center border-l border-white/5",
-                        "font-mono text-sm text-white/55 hover:text-red-300 hover:bg-white/[0.06] transition-colors",
+                        "shrink-0 w-8 flex items-center justify-center border-l border-[#111111]",
+                        "font-mono text-xs text-[#555555] hover:text-red-600 hover:bg-black/5 transition-colors cursor-pointer",
                       )}
                       aria-label={`Reset ${ex.name} to default`}
                     >
@@ -2168,8 +2168,8 @@ export function LingbotWorldController({ className }: { className?: string }) {
                     onClick={() => openEditorFor(ex.id)}
                     title={`Edit ${ex.name} prompt (no image upload / no auto-start)`}
                     className={cn(
-                      "shrink-0 w-9 flex items-center justify-center rounded-r-lg border-l border-white/5",
-                      "font-mono text-sm text-white/55 hover:text-amber-200 hover:bg-white/[0.06] transition-colors",
+                      "shrink-0 w-8 flex items-center justify-center border-l border-[#111111]",
+                      "font-mono text-xs text-[#111111] hover:bg-black/5 transition-colors cursor-pointer font-bold",
                     )}
                   >
                     ✎
@@ -2212,10 +2212,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
         })();
         return (
           <div className="flex flex-col gap-3">
-            <span className="text-xs font-mono uppercase tracking-widest text-primary">
+            <span className="text-xs font-mono uppercase tracking-widest font-extrabold text-[#111111]">
               Custom scene
             </span>
-            <p className="text-[10px] text-white/40 leading-snug">
+            <p className="text-[10px] text-[#555555] leading-snug">
               Bring your own image, author a full layered prompt (base / camera
               / movement / events), then apply.
             </p>
@@ -2237,7 +2237,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 variant="outline"
                 disabled={isUploading}
                 onClick={() => fileInputRef.current?.click()}
-                className="font-mono text-[10px]"
+                className="font-mono text-[10px] bg-white border-[#111111] text-[#111111] hover:bg-black/5 cursor-pointer shadow-[1px_1px_0px_#111111]"
               >
                 Choose image
               </Button>
@@ -2247,15 +2247,15 @@ export function LingbotWorldController({ className }: { className?: string }) {
                   <img
                     src={pendingImage.previewUrl}
                     alt={pendingImage.label}
-                    className="h-8 w-14 object-cover rounded border border-amber-300/40"
+                    className="h-8 w-14 object-cover rounded border border-[#111111]"
                   />
-                  <span className="font-mono text-[10px] text-amber-300/70 truncate max-w-[100px]">
+                  <span className="font-mono text-[10px] text-[#111111] font-bold truncate max-w-[100px]">
                     {pendingImage.label}
                   </span>
                   <button
                     type="button"
                     onClick={clearPendingImage}
-                    className="font-mono text-[10px] text-white/40 hover:text-white/80"
+                    className="font-mono text-[10px] text-[#555555] hover:text-black cursor-pointer"
                   >
                     x
                   </button>
@@ -2267,9 +2267,9 @@ export function LingbotWorldController({ className }: { className?: string }) {
                   <img
                     src={sentImagePreview}
                     alt="current"
-                    className="h-8 w-14 object-cover rounded border border-white/15"
+                    className="h-8 w-14 object-cover rounded border border-[#111111]"
                   />
-                  <span className="font-mono text-[10px] text-white/40">
+                  <span className="font-mono text-[10px] text-[#555555]">
                     sent{imageInfo ? ` · ${imageInfo.w}x${imageInfo.h}` : ""}
                   </span>
                 </div>
@@ -2282,7 +2282,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 size="sm"
                 variant="outline"
                 onClick={() => openEditorFor(CUSTOM_SCENE_ID)}
-                className="font-mono text-[10px]"
+                className="font-mono text-[10px] bg-white border-[#111111] text-[#111111] hover:bg-black/5 cursor-pointer shadow-[1px_1px_0px_#111111]"
               >
                 ✎{" "}
                 {customHasContent
@@ -2291,7 +2291,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
               </Button>
               {customHasContent && (
                 <>
-                  <span className="font-mono text-[10px] text-white/50">
+                  <span className="font-mono text-[10px] text-[#555555]">
                     {customScene!.events.length} event
                     {customScene!.events.length === 1 ? "" : "s"}
                     {" · "}
@@ -2300,10 +2300,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
                   <button
                     type="button"
                     onClick={() => clearOverrideFor(CUSTOM_SCENE_ID)}
-                    title="Clear your custom scene"
-                    className="font-mono text-sm text-white/55 hover:text-red-300 transition-colors"
+                    title="Clear custom prompt"
+                    className="font-mono text-[10px] text-[#777777] hover:text-red-600 cursor-pointer"
                   >
-                    ↺
+                    clear
                   </button>
                 </>
               )}
@@ -2347,16 +2347,16 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 hasPrompt ? "bg-green-400" : "bg-white/20",
               )}
             />
-            <span className="font-mono text-[10px] text-white/50">Prompt</span>
+            <span className="font-mono text-[10px] text-[#111111] font-bold">Prompt</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span
               className={cn(
-                "w-1.5 h-1.5 rounded-full",
-                hasImage ? "bg-green-400" : "bg-white/20",
+                "w-2 h-2 rounded-full",
+                hasImage ? "bg-[#00E599]" : "bg-black/20",
               )}
             />
-            <span className="font-mono text-[10px] text-white/50">Image</span>
+            <span className="font-mono text-[10px] text-[#111111] font-bold">Image</span>
           </div>
           <div className="flex-1" />
           <Button
@@ -2364,6 +2364,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
             disabled={!canStart}
             onClick={() => sendLifecycle("start")}
             title={startBlockerReason ?? undefined}
+            className="font-mono text-xs bg-[#111111] hover:bg-[#282828] text-white font-extrabold cursor-pointer border border-[#111111] shadow-[2px_2px_0px_#111111] disabled:opacity-30"
           >
             Start
           </Button>
@@ -2371,20 +2372,20 @@ export function LingbotWorldController({ className }: { className?: string }) {
       </div>
 
       {errorToast && (
-        <div className="rounded border border-red-500/30 bg-red-500/10 px-3 py-2 font-mono text-xs text-red-300">
+        <div className="rounded border border-red-500 bg-red-50 px-3 py-2 font-mono text-xs text-red-700">
           {errorToast}
         </div>
       )}
 
       {/* Advanced */}
-      <div className="border-t border-white/[0.06] pt-3 flex flex-col gap-2">
+      <div className="border-t border-[#111111] pt-3 flex flex-col gap-2">
         <div className="flex items-center gap-3 flex-wrap">
           <button
             type="button"
             onClick={() => setAdvancedOpen((v) => !v)}
-            className="font-mono text-[10px] uppercase tracking-wider text-white/40 hover:text-white/70 transition-colors"
+            className="font-mono text-[10px] uppercase tracking-wider text-[#111111] font-extrabold hover:text-black transition-colors cursor-pointer"
           >
-            {advancedOpen ? "▾" : "▸"} Advanced
+            {advancedOpen ? "▾" : "▸"} Advanced Settings
           </button>
         </div>
 
@@ -2989,7 +2990,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
 
         {/* Drag joystick: continuous translation; mirrors WASD when not dragging */}
         <div className="flex flex-col items-center gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Joystick
           </span>
           <div
@@ -3006,19 +3007,19 @@ export function LingbotWorldController({ className }: { className?: string }) {
             onPointerCancel={(e) => onJoyPointer(e, "up")}
             title="Drag for continuous movement (up = forward, down = back, left/right = strafe). Adds to WASD; mirrors WASD when idle."
             className={cn(
-              "relative rounded-full border touch-none select-none",
+              "relative rounded-full border border-[#111111] touch-none select-none",
               isReady
-                ? "cursor-grab active:cursor-grabbing border-white/15 bg-white/[0.03]"
-                : "opacity-30 border-white/10",
+                ? "cursor-grab active:cursor-grabbing bg-[#ECEBE8]"
+                : "opacity-30 bg-[#ECEBE8]",
             )}
             style={{ width: HUD, height: HUD }}
           >
-            <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/8" />
-            <div className="absolute top-1/2 left-0 w-full h-px -translate-y-1/2 bg-white/8" />
+            <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[#111111]/30" />
+            <div className="absolute top-1/2 left-0 w-full h-px -translate-y-1/2 bg-[#111111]/30" />
             <div
               className={cn(
                 "absolute h-4 w-4 rounded-full -translate-x-1/2 -translate-y-1/2 transition-all",
-                joyLit ? "bg-amber-300" : "bg-white/40",
+                joyLit ? "bg-[#00E599]" : "bg-[#111111]",
               )}
               style={{
                 left: `calc(50% + ${joyDispX * HUD_R}px)`,
@@ -3029,7 +3030,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
         </div>
 
         <div className="flex flex-col items-center gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Look (Arrows)
           </span>
           <div className="flex flex-col items-center gap-0.5">
@@ -3069,7 +3070,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
         {/* Mouse-look: click the circle to engage (pointer lock); Esc/M to release.
             Arrow shows live mouse signal direction + strength. */}
         <div className="flex flex-col items-center gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Mouse {mouseLook ? "(Esc/M)" : "(click)"}
           </span>
           <button
@@ -3084,7 +3085,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
             className={cn(
               "rounded-full transition-transform disabled:opacity-30",
               isReady && "cursor-pointer hover:scale-105",
-              mouseLook && "ring-2 ring-amber-300/60",
+              mouseLook && "ring-2 ring-[#111111]",
             )}
           >
             <svg width={HUD} height={HUD} className="shrink-0 block">
@@ -3093,19 +3094,18 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 cy={HUD_C}
                 r={HUD_R}
                 fill={
-                  mouseLook ? "rgba(252,211,77,0.06)" : "rgba(255,255,255,0.02)"
+                  mouseLook ? "rgba(0,229,153,0.15)" : "#ECEBE8"
                 }
-                stroke={
-                  mouseLook ? "rgba(252,211,77,0.45)" : "rgba(255,255,255,0.15)"
-                }
-                strokeWidth="1"
+                stroke="#111111"
+                strokeWidth="1.5"
               />
               <line
                 x1={HUD_C}
                 y1={HUD_C - HUD_R}
                 x2={HUD_C}
                 y2={HUD_C + HUD_R}
-                stroke="rgba(255,255,255,0.08)"
+                stroke="#111111"
+                strokeOpacity="0.3"
                 strokeWidth="1"
               />
               <line
@@ -3113,7 +3113,8 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 y1={HUD_C}
                 x2={HUD_C + HUD_R}
                 y2={HUD_C}
-                stroke="rgba(255,255,255,0.08)"
+                stroke="#111111"
+                strokeOpacity="0.3"
                 strokeWidth="1"
               />
               {hudActive && (
@@ -3123,20 +3124,18 @@ export function LingbotWorldController({ className }: { className?: string }) {
                     y1={HUD_C}
                     x2={hudEx}
                     y2={hudEy}
-                    stroke="rgb(252,211,77)"
+                    stroke="#111111"
                     strokeWidth="2"
                     strokeLinecap="round"
                   />
-                  <circle cx={hudEx} cy={hudEy} r="3" fill="rgb(252,211,77)" />
+                  <circle cx={hudEx} cy={hudEy} r="3" fill="#111111" />
                 </>
               )}
               <circle
                 cx={HUD_C}
                 cy={HUD_C}
-                r="2"
-                fill={
-                  mouseLook ? "rgba(252,211,77,0.8)" : "rgba(255,255,255,0.3)"
-                }
+                r="2.5"
+                fill="#111111"
               />
             </svg>
           </button>
@@ -3145,9 +3144,9 @@ export function LingbotWorldController({ className }: { className?: string }) {
 
       {/* Vertical controls — jump + crouch mode switches and the charge-level
           editor. Full-width row so the buttons are comfortably clickable. */}
-      <div className="flex flex-wrap items-start gap-x-8 gap-y-3 border-t border-white/[0.06] pt-3">
+      <div className="flex flex-wrap items-start gap-x-8 gap-y-3 border-t border-[#111111] pt-3">
         <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Jump (Space)
           </span>
           <div className="flex gap-1">
@@ -3168,10 +3167,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 onClick={() => changeJumpMode(m)}
                 title={title}
                 className={cn(
-                  "h-7 rounded border px-3 font-mono text-[11px] capitalize transition-colors disabled:opacity-30",
+                  "h-7 rounded border border-[#111111] px-3 font-mono text-[11px] capitalize transition-colors disabled:opacity-30 cursor-pointer",
                   jumpMode === m
-                    ? "border-amber-300/60 bg-amber-300/20 text-amber-200"
-                    : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10",
+                    ? "bg-[#111111] text-white font-bold"
+                    : "bg-white text-[#111111] hover:bg-black/5",
                 )}
               >
                 {m}
@@ -3182,7 +3181,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
 
         {jumpMode === "charge" && (
           <div className="flex flex-col gap-1.5">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+            <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
               Charge levels — click to edit
             </span>
             <div className="flex gap-1.5">
@@ -3195,14 +3194,14 @@ export function LingbotWorldController({ className }: { className?: string }) {
                     onClick={() => setEditingLevel(level)}
                     title={`Level ${level} — ${level} chunk${level > 1 ? "s" : ""}; click to edit its per-latent up/down/still pattern`}
                     className={cn(
-                      "flex h-9 w-14 flex-col items-center justify-center rounded border font-mono transition-colors",
+                      "flex h-9 w-14 flex-col items-center justify-center rounded border border-[#111111] font-mono transition-colors cursor-pointer",
                       i < chargeLevel
-                        ? "border-amber-300/60 bg-amber-300/25 text-amber-100"
-                        : "border-white/15 bg-white/5 text-white/70 hover:bg-white/10",
+                        ? "bg-[#111111] text-white font-bold"
+                        : "bg-white text-[#111111] hover:bg-black/5 shadow-[1px_1px_0px_#111111]",
                     )}
                   >
                     <span className="text-[13px] leading-none">{level}</span>
-                    <span className="text-[8px] leading-none text-white/45">
+                    <span className="text-[8px] leading-none opacity-60">
                       ✎ edit
                     </span>
                   </button>
@@ -3213,7 +3212,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
         )}
 
         <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Crouch (C)
           </span>
           <div className="flex items-center gap-1">
@@ -3240,10 +3239,10 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 onClick={() => changeCrouchMode(m)}
                 title={title}
                 className={cn(
-                  "h-7 rounded border px-3 font-mono text-[11px] capitalize transition-colors disabled:opacity-30",
+                  "h-7 rounded border border-[#111111] px-3 font-mono text-[11px] capitalize transition-colors disabled:opacity-30 cursor-pointer",
                   crouchMode === m
-                    ? "border-amber-300/60 bg-amber-300/20 text-amber-200"
-                    : "border-white/15 bg-white/5 text-white/60 hover:bg-white/10",
+                    ? "bg-[#111111] text-white font-bold"
+                    : "bg-white text-[#111111] hover:bg-black/5",
                 )}
               >
                 {m}
@@ -3254,7 +3253,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 type="button"
                 onClick={() => setEditingCrouch(true)}
                 title="Edit the crouch dip — which of this chunk's latents are down / still"
-                className="ml-1 flex h-7 items-center rounded border border-white/15 bg-white/5 px-2 font-mono text-[10px] text-white/70 hover:bg-white/10"
+                className="ml-1 flex h-7 items-center rounded border border-[#111111] bg-white px-2 font-mono text-[10px] text-[#111111] hover:bg-black/5 cursor-pointer font-bold"
               >
                 ✎ dip
               </button>
@@ -3263,7 +3262,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">
+          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111] font-bold">
             Orbit radius (O)
           </span>
           <div className="flex items-center gap-1.5">
@@ -3279,9 +3278,8 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 setOrbitRadius(Number.isFinite(v) ? Math.max(0, v) : 0);
               }}
               className={cn(
-                "h-7 w-24 font-mono text-xs tabular-nums",
+                "h-7 w-24 font-mono text-xs tabular-nums bg-white border border-[#111111] text-[#111111]",
                 "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
-                orbitRadius > 0 ? "text-amber-200" : "text-white/60",
               )}
               title="Orbit radius — 0 = rotate in place (normal). Type any value; bigger = wider/farther. Press O to mute / un-mute."
             />
@@ -3292,7 +3290,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 onClick={() =>
                   setOrbitRadius((r) => Math.max(0, r + ORBIT_RADIUS_STEP))
                 }
-                className="flex h-3.5 w-5 items-center justify-center rounded-t border border-b-0 border-white/15 bg-white/5 text-[8px] leading-none text-white/60 hover:bg-white/10 disabled:opacity-30"
+                className="flex h-3.5 w-5 items-center justify-center rounded-t border border-[#111111] bg-white text-[8px] leading-none text-[#111111] hover:bg-black/5 disabled:opacity-30 cursor-pointer"
                 title="Increase orbit radius"
               >
                 &#9650;
@@ -3303,7 +3301,7 @@ export function LingbotWorldController({ className }: { className?: string }) {
                 onClick={() =>
                   setOrbitRadius((r) => Math.max(0, r - ORBIT_RADIUS_STEP))
                 }
-                className="flex h-3.5 w-5 items-center justify-center rounded-b border border-white/15 bg-white/5 text-[8px] leading-none text-white/60 hover:bg-white/10 disabled:opacity-30"
+                className="flex h-3.5 w-5 items-center justify-center rounded-b border border-t-0 border-[#111111] bg-white text-[8px] leading-none text-[#111111] hover:bg-black/5 disabled:opacity-30 cursor-pointer"
                 title="Decrease orbit radius"
               >
                 &#9660;
@@ -3313,23 +3311,17 @@ export function LingbotWorldController({ className }: { className?: string }) {
         </div>
       </div>
 
-      <p className="font-mono text-[9px] text-white/35 leading-snug">
+      <p className="font-mono text-[9px] text-[#555555] leading-snug">
         WASD / joystick = move · arrows = look · Q/E = roll · Space = jump / C =
         crouch · click the Mouse circle for free-look (Esc/M to release).
-        <span className="text-white/50">Orbit radius</span> = while looking
+        <span className="text-[#111111] font-bold"> Orbit radius</span> = while looking
         (mouse or arrows), circle a point R ahead instead of turning in place; R
-        = 0 is normal rotation, press <span className="text-white/50">O</span>{" "}
+        = 0 is normal rotation, press <span className="text-[#111111] font-bold">O</span>{" "}
         to mute / un-mute. Jump mode:{" "}
-        <span className="text-white/50">Hold</span> = up while held ·
-        <span className="text-white/50"> Prompt</span> = prompt only ·
-        <span className="text-white/50"> Charge</span> = hold to charge a level,
-        release for that level&apos;s up→down arc (click a level to edit its
-        per-latent pattern). Crouch (all modes inject the scene&apos;s crouch
-        line):
-        <span className="text-white/50"> Hold</span> = straight down while held
-        ·<span className="text-white/50"> Prompt</span> = line only ·
-        <span className="text-white/50"> Camera</span> = a one-shot editable dip
-        (✎) plus the line.
+        <span className="text-[#111111] font-bold">Hold</span> = up while held ·
+        <span className="text-[#111111] font-bold"> Prompt</span> = prompt only ·
+        <span className="text-[#111111] font-bold"> Charge</span> = hold to charge a level,
+        release for that level&apos;s up→down arc.
       </p>
     </div>
   );

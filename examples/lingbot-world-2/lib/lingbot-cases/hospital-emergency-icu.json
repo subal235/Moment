@@ -1,0 +1,51 @@
+{
+  "id": "hospital_icu_4b",
+  "name": "🏥 Hospital Emergency Wing & ICU 4B",
+  "description": "Autonomous hospital delivery AMR navigating ICU 4B corridor — WASD moves forward, key 1 = Pedestrian+IV emergence, key 2 = Medication cart cross, key 3 = Glare occlusion, key 4 = Emergency power cut, key 5 = Parked wheelchair",
+  "image": {
+    "label": "Hospital Emergency Wing & ICU 4B",
+    "src": "/lingbot-cases/hospital_icu_robot.jpg"
+  },
+  "scene": {
+    "base": {
+      "default": "A sleek white autonomous medical delivery robot AMR with glowing cyan LED status strips navigating down a wide futuristic hospital ICU corridor at night. Dark clinical doors, polished reflective epoxy flooring, room 410 marked '410 • ICU ISOLATION', glass isolation doors, wall monitors, and emergency hospital signage."
+    },
+    "camera": {
+      "default": {
+        "static": "Third-person view from behind the autonomous medical robot AMR, its white body and chassis centered in frame at constant size — never a first-person view. Neither the robot nor camera moves; look-input is the only camera motion, arcing around the stationary centered robot while held.",
+        "dynamic": "Strict third-person rear view from close behind and slightly above the medical delivery robot, its white chassis filling frame centre — never first-person. It holds a fixed rear position and tracks behind the robot; look-input becomes the robot changing steering heading."
+      }
+    },
+    "movement": {
+      "default": {
+        "static": "The autonomous medical robot AMR stands perfectly stationary in the hospital corridor center, its motorized wheels locked, its cyan status LED lights pulsing gently on standby.",
+        "dynamic": "The autonomous medical robot AMR advances smoothly forward down the hospital corridor, its wheels rolling cleanly across the polished reflective floor, its cyan status LEDs glowing brightly as the clinic doors and ceiling lights glide past overhead."
+      }
+    },
+    "events": [
+      {
+        "name": "Pedestrian + IV Emergence",
+        "detail": "A patient in a blue hospital gown pushing a chrome IV drip stand steps directly out of occluded room 410 into the robot trajectory, crossing the corridor lane."
+      },
+      {
+        "name": "Medication Cart Cross",
+        "detail": "A nurse pushing a heavy multi-tier motorized stainless-steel medication cart crosses horizontally from the right wall into the main corridor lane."
+      },
+      {
+        "name": "Occlusion Glare & Lens Flare",
+        "detail": "An intense specular glare flare reflects off the polished floor from an overhead emergency surgical lamp, causing severe camera contrast saturation."
+      },
+      {
+        "name": "Emergency Power Cut (PWR-03)",
+        "detail": "Main overhead ceiling LEDs extinguish instantly; corridor drops into dark ambient lighting illuminated only by pulsing amber emergency backup beacons."
+      },
+      {
+        "name": "Parked Wheelchair Hazard",
+        "detail": "An unattended foldable wheelchair with metallic footrests is partially parked across the left navigation lane, obstructing 40% of the corridor width."
+      }
+    ],
+    "jumpPrompt": "The medical delivery AMR raises its front chassis on active suspension, executing a rapid vertical hop over floor cables.",
+    "crouchPrompt": "The medical delivery AMR lowers its center of gravity and extends stabilization friction pads against the floor for rapid deceleration.",
+    "standPrompt": "The medical delivery AMR retracts stabilization pads, returning to standard cruising ride height."
+  }
+}
