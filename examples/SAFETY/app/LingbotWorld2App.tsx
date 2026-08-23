@@ -136,7 +136,7 @@ function EmbodiedSimulatorSection() {
 
             {status === "disconnected" ? (
               <button
-                onClick={handleConnect}
+                onClick={() => handleConnect()}
                 className="px-5 py-2.5 rounded-lg bg-[#142820] text-white hover:bg-[#0E1E18] text-xs font-semibold transition-all cursor-pointer shadow-sm"
               >
                 Connect 3D AMR Stream →
@@ -199,7 +199,7 @@ function EmbodiedSimulatorSection() {
                   )}
 
                   <button
-                    onClick={handleConnect}
+                    onClick={() => handleConnect()}
                     className="px-5 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-zinc-200 border border-zinc-700 transition-all cursor-pointer shadow-sm active:scale-95"
                   >
                     Launch 3D AMR Stream →
