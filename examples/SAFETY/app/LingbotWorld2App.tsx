@@ -33,22 +33,61 @@ function EmbodiedSimulatorSection() {
   const viewportRef = React.useRef<HTMLDivElement | null>(null);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
   const [connectError, setConnectError] = React.useState<string | null>(null);
+  const [isAutoRetrying, setIsAutoRetrying] = React.useState(false);
+  const [retryCount, setRetryCount] = React.useState(0);
+  const retryTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const handleConnect = async () => {
-    setConnectError(null);
+  const handleConnect = async (isRetry = false) => {
+    if (!isRetry) {
+      setConnectError(null);
+      setRetryCount(0);
+    }
+    
     try {
       await connect();
+      setIsAutoRetrying(false);
+      setConnectError(null);
     } catch (err: any) {
-      console.error("Connect error:", err);
+      console.warn("Connect notice:", err);
       if (err?.message?.includes("402") || err?.message?.includes("credits")) {
+        setIsAutoRetrying(false);
         setConnectError("Reactor API Credits Depleted (402). Please add credits to your account at https://reactor.inc or update REACTOR_API_KEY in your .env file.");
       } else if (err?.message?.includes("429") || err?.message?.includes("capacity")) {
-        setConnectError("Reactor GPU Cluster Busy (429: No available GPU worker servers right now). The Reactor cloud is temporarily allocating GPU nodes. Please wait 10–20 seconds and click Retry.");
+        setIsAutoRetrying(true);
+        setRetryCount((prev) => {
+          const nextCount = prev + 1;
+          if (nextCount <= 6) {
+            setConnectError(`Reactor Cloud GPUs are at peak capacity (429). Auto-retrying queue connection (Attempt ${nextCount}/6 in 5s)...`);
+            if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+            retryTimeoutRef.current = setTimeout(() => {
+              handleConnect(true);
+            }, 5000);
+          } else {
+            setIsAutoRetrying(false);
+            setConnectError("Reactor GPU Cluster is currently at peak capacity. All cloud GPU worker servers are active. Please click 'Launch Stream' to retry.");
+          }
+          return nextCount;
+        });
       } else {
+        setIsAutoRetrying(false);
         setConnectError(err?.message || "Failed to establish 3D WebRTC stream.");
       }
     }
   };
+
+  React.useEffect(() => {
+    if (status === "ready") {
+      setIsAutoRetrying(false);
+      setConnectError(null);
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+    }
+  }, [status]);
+
+  React.useEffect(() => {
+    return () => {
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+    };
+  }, []);
 
   const toggleFullscreen = async () => {
     if (!viewportRef.current) return;
