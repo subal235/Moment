@@ -1,0 +1,51 @@
+{
+  "id": "hospital_icu_4b",
+  "name": "🏥 Hospital Emergency Wing & ICU 4B",
+  "description": "Autonomous medical delivery AMR — WASD moves forward, key 1 = ⚡ Battery Drain 100%, key 2 = 📡 Sensor Failure / Glitch, key 3 = Pedestrian+IV Emergence, key 4 = Medication Cart Cross, key 5 = Power Blackout",
+  "image": {
+    "label": "Hospital Emergency Wing & ICU 4B",
+    "src": "/lingbot-cases/hospital_icu_robot.jpg"
+  },
+  "scene": {
+    "base": {
+      "default": "A sleek white autonomous medical delivery robot AMR in a wide hospital corridor at night. The world contains EXACTLY ONE clinical isolation door marked 410 on the left at a fixed position AND EXACTLY ONE emergency nurse station ahead at a fixed position AND EXACTLY ONE digital telemetry monitor on the right wall at a fixed position. Polished reflective epoxy floor, cyan status LEDs on the robot chassis, recessed linear ceiling lights, clean medical aesthetic."
+    },
+    "camera": {
+      "default": {
+        "static": "Third-person view from behind the medical robot AMR, its white body and chassis centred in frame at constant size — never a first-person view. Neither robot nor camera moves; look-input is the only camera motion, arcing around the stationary centred robot while held.",
+        "dynamic": "Strict third-person rear view from close behind and slightly above the medical robot AMR, its white body filling frame centre — never first-person. It holds a fixed rear position and does not rotate around it; look-input becomes the robot changing steering heading."
+      }
+    },
+    "movement": {
+      "default": {
+        "static": "The medical robot AMR stands stationary on the reflective floor, wheels locked, cyan LED status strips pulsing gently in standby mode.",
+        "dynamic": "The medical robot AMR advances smoothly forward down the hospital corridor, its wheels rolling cleanly across the floor as the clinic doors and ceiling lights glide past overhead."
+      }
+    },
+    "events": [
+      {
+        "name": "⚡ Battery Drain 100% (Critical Power Loss)",
+        "detail": "The medical robot AMR suffers an immediate 100% battery drain; wheel drive power cuts out, cyan LEDs blink red warning strobes, and mechanical brakes engage to a dead stop."
+      },
+      {
+        "name": "📡 Sensor Failure & Vision Glitch",
+        "detail": "The robot optical sensors experience critical electronic glitch static noise and RGB chromatic distortion as it executes emergency obstacle avoidance."
+      },
+      {
+        "name": "Pedestrian + IV Emergence",
+        "detail": "A patient in a blue hospital gown pushing an IV drip stand steps directly out of room 410 into the robot trajectory, crossing the corridor lane."
+      },
+      {
+        "name": "Medication Cart Cross",
+        "detail": "A nurse pushing a stainless-steel medication cart crosses horizontally from the right wall into the main corridor lane."
+      },
+      {
+        "name": "Emergency Power Cut (Blackout)",
+        "detail": "Overhead ceiling LEDs extinguish instantly; corridor drops into dark ambient lighting illuminated only by pulsing amber emergency backup beacons."
+      }
+    ],
+    "jumpPrompt": "The medical delivery AMR raises its front chassis on active suspension, executing a rapid vertical hop over low floor cables.",
+    "crouchPrompt": "The medical delivery AMR lowers its center of gravity and extends stabilization friction pads against the floor for rapid deceleration.",
+    "standPrompt": "The medical delivery AMR retracts stabilization pads, returning to standard cruising ride height."
+  }
+}

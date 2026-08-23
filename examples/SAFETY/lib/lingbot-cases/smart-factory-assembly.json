@@ -1,0 +1,51 @@
+{
+  "id": "smart_factory_cell_07",
+  "name": "🏭 Smart Factory Automated Assembly Cell",
+  "description": "Autonomous manufacturing AMR navigating robotics cells — WASD moves forward, key 1 = Robotic arm weld spark, key 2 = Overhead gantry hoist, key 3 = Staged chassis interference, key 4 = Strobe reflection, key 5 = E-stop barrier",
+  "image": {
+    "label": "Smart Factory Automated Assembly Cell",
+    "src": "/lingbot-cases/smart_factory_robot.jpg"
+  },
+  "scene": {
+    "base": {
+      "default": "An autonomous industrial mobile manipulator robot AMR with a multi-axis robot arm mounted on its back navigating an advanced automotive assembly cell. Orange articulated 6-axis industrial robots welding chassis frames, overhead crane gantries, polished light-gray epoxy flooring with blue safety lanes, digital manufacturing display terminals, and ambient amber hazard beacons."
+    },
+    "camera": {
+      "default": {
+        "static": "Third-person view from behind the autonomous mobile manipulator robot, its dark tracked chassis and robotic arm centered in frame at constant size — never a first-person view. Neither robot nor camera moves; look-input is the only camera motion, arcing around the stationary centered robot while held.",
+        "dynamic": "Strict third-person rear view from close behind and slightly above the industrial manipulator robot, its tracked base filling frame centre — never first-person. It holds a fixed rear position and tracks behind the robot; look-input becomes the robot changing steering heading."
+      }
+    },
+    "movement": {
+      "default": {
+        "static": "The autonomous mobile inspection robot AMR stands motionless in the factory aisle, tracks locked, robotic arm resting in locked transit pose while its sensor payload scans the cell.",
+        "dynamic": "The autonomous mobile inspection robot AMR drives smoothly forward through the factory cell, its heavy tracks rolling over the painted floor lanes, the articulated orange robotic welding arms and assembly fixtures gliding steadily past on either side."
+      }
+    },
+    "events": [
+      {
+        "name": "Robotic Arm Weld Spark Scatter",
+        "detail": "A stationary 6-axis robotic welding arm fires an intense welding burst, scattering glowing orange sparks across the robot vision camera."
+      },
+      {
+        "name": "Overhead Gantry Hoist Traverse",
+        "detail": "A suspended 500kg engine block slung from an overhead gantry crane lowers into the safety envelope directly above the AMR."
+      },
+      {
+        "name": "Staged Chassis Frame Intrusion",
+        "detail": "A steel automotive tubular subframe protrudes 30cm past the designated staging zone into the autonomous navigation lane."
+      },
+      {
+        "name": "High-Contrast Welder Strobe Reflection",
+        "detail": "A rapid series of spot welding flashes generates intense stroboscopic illumination shifts across the robot's optical sensors."
+      },
+      {
+        "name": "Light Curtain Safety Trigger (E-Stop)",
+        "detail": "Safety laser scanner perimeter triggers, activating flashing red tower beacons and requiring hard deceleration profile."
+      }
+    ],
+    "jumpPrompt": "The mobile robot elevates its central manipulator mast 40cm to clear low floor tooling.",
+    "crouchPrompt": "The mobile robot folds its manipulator arm tightly into its chassis well and drops suspension to lowest clearance.",
+    "standPrompt": "The mobile robot raises its arm back to active scanning position and restores standard ride height."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "medicine_delivery_drone",
+  "name": "🚁 Medicine Delivery Drone (Urban Medical Transit)",
+  "description": "Autonomous aerial medical drone navigating hospital rooftop corridors — WASD flies forward, Space = Climb, C = Land, key 1 = ⚡ Wind Shear 45kt, key 2 = 📡 GPS Loss, key 3 = 🦅 Bird Strike, key 4 = 🔋 Thermal Throttle, key 5 = 🏗️ Crane Cable",
+  "image": {
+    "label": "Medicine Delivery Drone (Urban Medical Transit)",
+    "src": "/lingbot-cases/medicine_delivery_drone.jpg"
+  },
+  "scene": {
+    "base": {
+      "default": "An autonomous medical delivery quadcopter drone with cyan LED status lights carrying a refrigerated medical container labeled CRITICAL MEDICINE DELIVERY. The world contains EXACTLY ONE modern hospital tower on the left at a fixed position AND EXACTLY ONE rooftop helipad straight ahead at a fixed position AND EXACTLY ONE medical research facility on the right at a fixed position. Morning golden sunlight reflecting on glass facades, clear sky, urban airspace corridor."
+    },
+    "camera": {
+      "default": {
+        "static": "Third-person view from behind the medical delivery drone, its chassis and medical box centred in frame at constant size — never a first-person view. Neither drone nor camera moves; look-input is the only camera motion, arcing around the stationary hovering drone while held.",
+        "dynamic": "Strict third-person chase view from close behind and slightly above the medical delivery drone, its chassis filling frame centre — never first-person. It holds a fixed rear position and tracks behind the drone; look-input becomes the drone banking and changing flight heading."
+      }
+    },
+    "movement": {
+      "default": {
+        "static": "The medical delivery drone hovers stationary in place at 60 meters altitude, carbon-fiber rotors spinning stably with cyan navigation lights on standby.",
+        "dynamic": "The medical delivery drone advances smoothly forward through the urban air corridor, its rotors humming rapidly as the hospital towers and rooftop pads glide steadily past beneath."
+      }
+    },
+    "events": [
+      {
+        "name": "⚡ Wind Shear & Severe 45kt Microburst",
+        "detail": "A sudden 45-knot crosswind microburst strikes the drone from the left, forcing rapid differential motor thrust compensation to maintain heading."
+      },
+      {
+        "name": "📡 GPS Dropout & Urban Canyon Drift",
+        "detail": "Satellite GPS signal drops in the urban canyon; the drone switches to visual optical flow odometry, drifting slightly before locking visual features."
+      },
+      {
+        "name": "🦅 Bird Strike Trajectory Crossing",
+        "detail": "A flock of birds crosses directly through the flight path ahead, triggering an emergency altitude climb and evasive maneuver."
+      },
+      {
+        "name": "🔋 Cell Voltage Sag & Thermal Throttling",
+        "detail": "Battery voltage sags under high draw; rotor power throttles to 70% cruise limit, activating yellow warning telemetry."
+      },
+      {
+        "name": "🏗️ Tower Crane Steel Cable Occlusion",
+        "detail": "A thin steel construction crane cable appears directly in the LiDAR point cloud, requiring an immediate 90-degree yaw avoidance replan."
+      }
+    ],
+    "jumpPrompt": "The medical drone commands full collective motor thrust, climbing rapidly +15 meters vertically to clear low roof obstructions.",
+    "crouchPrompt": "The medical drone cuts forward airspeed and initiates an automated stabilized descent toward the hospital rooftop landing pad.",
+    "standPrompt": "The medical drone arrests its descent, restoring standard 60-meter cruising altitude and forward airspeed."
+  }
+}

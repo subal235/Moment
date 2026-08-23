@@ -1,0 +1,51 @@
+{
+  "id": "warehouse_logistics_12",
+  "name": "🚚 Logistics Fulfillment Center Aisle 12",
+  "description": "Autonomous logistics forklift navigating high-bay pallet aisles — WASD drives forward, key 1 = Toppled carton, key 2 = Crossing AMR, key 3 = Blind corner worker, key 4 = Strobe reflection, key 5 = Wet liquid spill",
+  "image": {
+    "label": "Logistics Fulfillment Center Aisle 12",
+    "src": "/lingbot-cases/warehouse_forklift_robot.jpg"
+  },
+  "scene": {
+    "base": {
+      "default": "An autonomous yellow industrial forklift robot AMR carrying a loaded pallet of corrugated boxes navigating down a high-bay logistics warehouse aisle. Heavy steel pallet racks stacked 6 levels high with barcode labels, industrial high-bay overhead LED lighting, smooth concrete floor with yellow painted guidance lines."
+    },
+    "camera": {
+      "default": {
+        "static": "Third-person view from behind the yellow autonomous forklift robot, its mast and loaded pallet centered in frame at constant size — never a first-person view. Neither robot nor camera moves; look-input is the only camera motion, arcing around the stationary centered forklift while held.",
+        "dynamic": "Strict third-person rear view from close behind and slightly above the autonomous forklift robot, its yellow chassis filling frame centre — never first-person. It holds a fixed rear position and tracks behind the forklift; look-input becomes the vehicle changing steering heading."
+      }
+    },
+    "movement": {
+      "default": {
+        "static": "The autonomous yellow forklift AMR sits stationary in the center aisle, pallet raised 10cm, yellow safety beacon flashing on its overhead guard in idle mode.",
+        "dynamic": "The autonomous yellow forklift AMR drives steadily forward down the warehouse aisle, its heavy rubber drive wheels rolling along the concrete floor, the tall rack uprights and stacked pallets gliding smoothly past on both sides."
+      }
+    },
+    "events": [
+      {
+        "name": "Toppled Carton Hazard",
+        "detail": "A large 25kg corrugated shipping carton falls from shelf level 2 directly into the vehicle driving lane 4 meters ahead."
+      },
+      {
+        "name": "Crossing Tugger AMR",
+        "detail": "An autonomous tow tractor pulling a train of 3 carts crosses perpendicularly through the intersection directly in front of the forklift."
+      },
+      {
+        "name": "Blind Corner Worker Emergence",
+        "detail": "A warehouse worker wearing a neon high-visibility safety vest and hardhat suddenly steps out from behind rack upright 12B into the aisle."
+      },
+      {
+        "name": "Strobe Reflection Sensor Glare",
+        "detail": "A high-intensity safety beacon flash on an opposing vehicle creates a specular blinding glare across the LiDAR optical window."
+      },
+      {
+        "name": "Wet Liquid Spill (Friction Loss)",
+        "detail": "A slick puddle of clear hydraulic fluid on the polished concrete causes partial wheel traction loss and lateral yaw deviation."
+      }
+    ],
+    "jumpPrompt": "The forklift activates hydraulic suspension lift, elevating the mast and forks 50cm.",
+    "crouchPrompt": "The forklift lowers its pallet flush to the floor and engages electromagnetic emergency brakes.",
+    "standPrompt": "The forklift raises the pallet back to standard 10cm transport clearance."
+  }
+}

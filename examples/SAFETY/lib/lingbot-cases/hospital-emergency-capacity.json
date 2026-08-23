@@ -1,0 +1,154 @@
+{
+  "id": "hospital_emergency_capacity_1",
+  "name": "🚨 Hospital Emergency Response & Capacity",
+  "description": "Interactive hospital emergency decision environment — simulate interconnected patient arrivals, hospital capacity, ambulance allocation, road congestion, travel times, and staff/resource constraints to understand how interventions change downstream outcomes.",
+
+  "image": {
+    "label": "Hospital Emergency Response & Capacity",
+    "src": "/lingbot-cases/hospital_emergency_capacity.jpg"
+  },
+
+  "scene": {
+    "base": {
+      "default": "A large metropolitan hospital emergency response environment during a major emergency at night. The world contains EXACTLY ONE emergency department entrance, EXACTLY ONE hospital capacity command center, EXACTLY ONE ambulance dispatch zone, EXACTLY ONE ambulance fleet staging area, EXACTLY ONE city road network leading toward the hospital, EXACTLY ONE emergency department triage area, EXACTLY ONE patient waiting area, EXACTLY ONE staff resource board, and EXACTLY ONE hospital capacity telemetry display. Multiple ambulances, patients, emergency staff, and road vehicles are present. Digital displays show hospital occupancy, available beds, ambulance allocation, estimated travel time, road congestion, staff availability, and incoming patient demand. The environment is designed as an interactive decision simulation where changes to one part of the system propagate through connected hospital and transportation variables.",
+      "emergency": "A large-scale emergency has caused a sudden increase in patient arrivals. Ambulances are transporting patients from multiple locations while the hospital emergency department approaches capacity. Road congestion is increasing ambulance travel times, available beds are decreasing, and staff and medical resources are becoming constrained."
+    },
+
+    "camera": {
+      "default": {
+        "static": "Third-person strategic simulation view overlooking the hospital emergency response environment, with the hospital, ambulance staging area, road network, emergency department, and capacity command center visible. Camera remains fixed unless the user intentionally navigates the environment.",
+        "dynamic": "Third-person strategic command view following the active simulation state. The camera can smoothly navigate between the hospital, ambulance staging area, road network, emergency department, and command center while maintaining a clear overview of the interconnected system."
+      }
+    },
+
+    "movement": {
+      "default": {
+        "static": "Ambulances, emergency vehicles, patients, hospital staff, and road traffic operate in a continuous simulation. Ambulances remain in staging or travel toward the hospital, patients enter the emergency department, and staff move between operational areas.",
+        "dynamic": "Ambulances dynamically travel through the road network toward the hospital, road traffic changes according to congestion, patients arrive at the emergency department, hospital staff respond to demand, and available beds and resources change as the emergency develops."
+      }
+    },
+
+    "systems": {
+      "patient_arrivals": {
+        "description": "Incoming emergency patients arrive through ambulance transport and direct hospital presentation. Increasing patient arrivals increases emergency department demand and hospital capacity pressure."
+      },
+
+      "hospital_capacity": {
+        "description": "Hospital capacity changes as patients are admitted, transferred, discharged, or delayed. Available beds decrease as demand increases and recover when capacity is released."
+      },
+
+      "ambulance_allocation": {
+        "description": "Ambulances are dynamically allocated between emergency locations and the hospital. Changing ambulance allocation affects patient pickup availability, travel time, and future patient arrivals."
+      },
+
+      "road_congestion": {
+        "description": "Traffic density on the city road network dynamically changes ambulance travel time. Increased congestion delays patient arrival while reduced congestion improves response time."
+      },
+
+      "staff_resources": {
+        "description": "Doctors, nurses, beds, treatment rooms, and critical medical resources have finite availability. Increasing patient demand can create staff and resource bottlenecks."
+      },
+
+      "decision_dependencies": {
+        "description": "Patient arrivals affect hospital capacity; hospital capacity affects patient allocation; ambulance allocation affects travel time; road congestion affects arrival time; and staff and resource constraints affect the hospital's ability to absorb additional demand."
+      }
+    },
+
+    "telemetry": {
+      "default": {
+        "hospital_occupancy": "Percentage of occupied hospital beds.",
+        "available_beds": "Number of immediately available beds.",
+        "incoming_patients": "Number of patients currently expected to arrive.",
+        "ambulances_available": "Number of ambulances currently available for dispatch.",
+        "ambulances_en_route": "Number of ambulances currently transporting patients.",
+        "average_travel_time": "Estimated average ambulance travel time to the hospital.",
+        "road_congestion": "Current congestion level across the ambulance route network.",
+        "staff_availability": "Available emergency medical staff relative to current demand.",
+        "resource_availability": "Availability of critical treatment rooms, equipment, and medical resources.",
+        "emergency_department_load": "Current operational load of the emergency department.",
+        "capacity_forecast": "Projected hospital capacity after the selected intervention."
+      }
+    },
+
+    "events": [
+      {
+        "name": "🚑 Patient Surge",
+        "detail": "A sudden emergency causes a large increase in incoming patients. Ambulance dispatch volume rises, emergency department demand increases, available beds decline, and staff workload increases."
+      },
+      {
+        "name": "🏥 Hospital Capacity Constraint",
+        "detail": "Hospital occupancy approaches or reaches critical capacity. New patient allocation becomes increasingly difficult and incoming ambulances may need to be redirected or queued."
+      },
+      {
+        "name": "🚨 Ambulance Allocation Change",
+        "detail": "The decision-maker reallocates ambulances between emergency locations. This changes pickup availability, patient transport coverage, and expected hospital arrival times."
+      },
+      {
+        "name": "🚗 Road Congestion Increase",
+        "detail": "Major road congestion develops along ambulance routes. Ambulance travel time increases, causing delayed patient arrivals and changing the timing of hospital capacity pressure."
+      },
+      {
+        "name": "👩‍⚕️ Staff Resource Shortage",
+        "detail": "Emergency department staffing becomes constrained. Treatment throughput decreases, patients remain in the system longer, and effective hospital capacity decreases even when physical beds remain available."
+      },
+      {
+        "name": "🔄 Patient Diversion",
+        "detail": "Hospital capacity reaches a critical threshold and incoming patients are dynamically redirected toward alternative hospitals, changing ambulance travel times and reducing immediate pressure on the primary hospital."
+      },
+      {
+        "name": "📈 Demand Escalation",
+        "detail": "Patient arrivals continue increasing faster than the hospital can discharge, transfer, or treat patients, creating a cascading capacity failure."
+      },
+      {
+        "name": "🟢 Capacity Recovery",
+        "detail": "Additional staff, beds, treatment resources, or hospital capacity become available. Patient throughput improves and the hospital begins recovering from the emergency surge."
+      }
+    ],
+
+    "interventions": [
+      {
+        "id": "increase_ambulances",
+        "name": "Increase Ambulance Allocation",
+        "detail": "Deploy additional ambulances to high-demand emergency locations and observe the resulting changes in pickup coverage, travel time, and patient arrival volume."
+      },
+      {
+        "id": "reroute_ambulances",
+        "name": "Reroute Ambulances",
+        "detail": "Redirect ambulances through lower-congestion routes to reduce travel time and change the timing of patient arrivals."
+      },
+      {
+        "id": "divert_patients",
+        "name": "Divert Patients",
+        "detail": "Redirect incoming patients toward alternative hospitals with greater available capacity."
+      },
+      {
+        "id": "increase_staff",
+        "name": "Increase Staff",
+        "detail": "Deploy additional emergency doctors, nurses, and support staff to increase treatment throughput and effective capacity."
+      },
+      {
+        "id": "open_capacity",
+        "name": "Open Additional Beds",
+        "detail": "Activate additional hospital beds and treatment areas to absorb increased emergency demand."
+      }
+    ],
+
+    "decisionPrompt": "The emergency response system is interconnected. Before applying an intervention, inspect the current hospital capacity, incoming patient demand, ambulance allocation, road congestion, travel times, and staff availability. Apply one or more interventions and observe how the system changes over time.",
+
+    "forecastPrompt": "Project the next stage of the emergency response after the selected intervention. Estimate future patient arrivals, hospital occupancy, available beds, ambulance travel times, road congestion, staff utilization, and the probability of exceeding effective hospital capacity.",
+
+    "counterfactualPrompt": "Compare the current simulation against the projected outcome if the selected intervention had not been applied. Highlight which downstream variables changed and explain the causal chain between the intervention and the resulting hospital state.",
+
+    "decisionOutput": {
+      "current_state": "Describe the current emergency response state.",
+      "intervention": "Describe the intervention applied by the decision-maker.",
+      "projected_state": "Describe the expected future state after the intervention.",
+      "capacity_impact": "Explain how hospital capacity is expected to change.",
+      "ambulance_impact": "Explain how ambulance allocation and travel times are expected to change.",
+      "traffic_impact": "Explain how road congestion affects patient arrival timing.",
+      "staff_impact": "Explain how staff and resource constraints affect treatment capacity.",
+      "risk": "Identify the major projected operational risks.",
+      "recommendation": "Recommend the next decision based on the projected system state."
+    }
+  }
+}
